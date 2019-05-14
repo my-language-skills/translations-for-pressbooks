@@ -5,7 +5,7 @@
 Plugin Name:  Translations for PressBooks
 Plugin URI:   https://developer.wordpress.org/plugins/the-basics/
 Description:  Add translations tools
-Version:      1.2
+Version:      1.2.1
 Author:       @huguespages (My Language Skills)
 Author URI:   https://developer.wordpress.org/
 License:      GPL 3.0
@@ -419,7 +419,7 @@ function pbc_check_trans($blog_id) {
 
  			echo '<li>'.$separator.' <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'">'.$lang.'</a> </li>';
 			//transform the language code into flag picture but you have to comment the line before this
-			//echo '<li>'.$separator.' <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'"><img onmouseover="bigImg(this)" onmouseout="normalImg(this)"  width="16" height="11" src="/wp-content/plugins/extensions-for-pressbooks/flag-icon/'.$lang.'.png" </a> </li>';
+			//echo '<li>'.$separator.' <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'"><img onmouseover="bigImg(this)" onmouseout="normalImg(this)"  width="16" height="11" src="/wp-content/plugins/extensions-for-pressbooks/assets/flag-icon/'.$lang.'.png" </a> </li>';
 
  			$flag = 1;
  		}

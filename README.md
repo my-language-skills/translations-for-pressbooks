@@ -1,4 +1,4 @@
-# Extensions for PressBooks
+# Translations for PressBooks
 
 Contributors:  @danzhik, @hugues
 
@@ -47,7 +47,7 @@ The Translations For Pressbooks plugin is supplied "as is" and all use is at you
 
 ## Instructions
 
-If you need some help with understanding on how plugin works, take a look at [user manual](/user-manual.md).
+If you need some help with understanding on how plugin works, take a look at [user manual](/doc/user-manual.md).
 
 
 ### Now
@@ -67,21 +67,27 @@ If you need some help with understanding on how plugin works, take a look at [us
 ### Future
 
 ### Changelog
+#### 1.2.1
+* **ENHANCEMENTS**
+* Create  folder assets and add folder flag-icon
+
+* **List of Files revised**
+ * translations-for-pressbooks.php
+
+
 #### 1.2
 
 
 * **ADDITIONS**
 	* Languages names alphabetical organization #8
 
-
-* **ENHANCEMENTS**
-	* translations-relationships.php
-
-
 * **BUGFIXES**
 	* Translations bug #8
 	* Concentration of code #10
 
+* **List of Files revised**
+     * translations-for-pressbooks.php
+     * original-mark.php
 
 #### 1.1
 * Edition extension removed
