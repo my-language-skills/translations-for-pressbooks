@@ -2,7 +2,7 @@
 ```
 plugins/translations-for-pressbooks/            # → Plugin root
 ├── assets/                                     # → Original mark folder
-│   └── flag-icon/                              # → Assets folder
+│   └── flag-icon/                              # → Assets folder with all flagicon
 ├── doc/                                        # → Doc folder
 ├── original-mark/                              # → Original mark folder
 │   └── assets/                                 # → Assets folder
