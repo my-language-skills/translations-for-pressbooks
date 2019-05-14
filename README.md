@@ -36,7 +36,7 @@ For upgrades, download the las stable version from github, delete from FTP the o
 
 The Translations For Pressbooks plugin works with:
 
- * ![Extentions for PressBooks](https://img.shields.io/badge/PHP-7.2.X-blue.svg)https://github.com/my-language-skills/extensions-for-pressbooks/releases/tag/1.2
+ * ![extensions-for-pressbooks](https://github.com/my-language-skills/extensions-for-pressbooks/releases/tag/1.2)
  * ![PHP](https://img.shields.io/badge/PHP-7.2.X-blue.svg)
  * [![Pressbooks](https://img.shields.io/badge/Pressbooks-V%205.4.7-red.svg)](https://github.com/pressbooks/pressbooks/releases/tag/5.4.7)
 
