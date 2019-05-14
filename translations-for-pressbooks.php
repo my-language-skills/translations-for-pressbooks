@@ -14,7 +14,6 @@ Text Domain:  translations-for-pressbooks
 Domain Path:  /languages
 */
 defined ("ABSPATH") or die ("No script assholes!");
-include_once plugin_dir_path( __FILE__ ) . "original-mark/original-mark.php";
 
 add_action('wp_ajax_efp_mark_as_original', 'tre_update_trans_table', 2);
 add_action('custom_metadata_manager_init_metadata', 'tre_create_language_box', 10);

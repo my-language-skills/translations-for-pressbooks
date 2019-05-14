@@ -72,6 +72,9 @@ If you need some help with understanding on how plugin was structured, take a lo
 * **ENHANCEMENTS**
    * Create  folder assets and add folder flag-icon
 
+* **REMOVED**
+      * Original mark, now it's in extensions-for-pressbooks
+
 * **List of Files revised**
    * translations-for-pressbooks.php
 
