@@ -48,6 +48,7 @@ The Translations For Pressbooks plugin is supplied "as is" and all use is at you
 ## Instructions
 
 If you need some help with understanding on how plugin works, take a look at [user manual](/doc/user-manual.md).
+If you need some help with understanding on how plugin was structured, take a look at [folder structure](/doc/folder-structure.md).
 
 
 ### Now
