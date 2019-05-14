@@ -70,10 +70,10 @@ If you need some help with understanding on how plugin was structured, take a lo
 ### Changelog
 #### 1.2.1
 * **ENHANCEMENTS**
-* Create  folder assets and add folder flag-icon
+   * Create  folder assets and add folder flag-icon
 
 * **List of Files revised**
- * translations-for-pressbooks.php
+   * translations-for-pressbooks.php
 
 
 #### 1.2
