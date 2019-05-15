@@ -68,7 +68,7 @@ If you need some help with understanding on how plugin was structured, take a lo
 ### Future
 
 ### Changelog
-#### 1.2.X
+#### 1.2.2
 * **ENHANCEMENTS**
    * Hide not use languages
 
