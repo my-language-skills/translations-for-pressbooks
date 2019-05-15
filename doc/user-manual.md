@@ -5,10 +5,6 @@
 This manual gives brief explainations on features of the plugin, which could be useful for developement of your website and for understanding how to recieve desired behaviour of a plugin.
 
 
-## Original Mark
-
-Original Mark package provides network administrators with ability to mark books of original publisher. It is done with a checkbox in `/wp-admin/network/sites.php` page, after activation of a plugin you will have new column there with name 'Featured Books'.
-
 ## Translations relations
 
 In case you are creating translations of your books, 'Translations relations' can help you with automatic linking between all of the the translations and original book. For current moment plugin logically interconnects only books about languages.
@@ -45,13 +41,13 @@ If by mistake you have put the wrong language of a book in point 3 of working st
 If you want to printing the links of traduction in web-pages, you just have to copy past this lines.
 
 	<ul class="footer__pressbooks__links__list" style="margin-bottom: 1rem;">
-	<?php 
+	<?php
 		$blog_id = get_current_blog_id();
-		pbc_print_trans_links($blog_id); 
+		pbc_print_trans_links($blog_id);
 	?>
 	</ul>
-	
+
 
 **Note!** Do not change permalinks in your translations, otherwise links will lead to non-existing pages in other books.
 
-In order for the links to be shown in the front-end of a website, use our [theme](https://github.com/my-language-skills/books4languages-book-child-theme-for-pressbooks). Since some relations will be established, the links will appear in the footer of every web-page of your connected books. 
+In order for the links to be shown in the front-end of a website, use our [theme](https://github.com/my-language-skills/books4languages-book-child-theme-for-pressbooks). Since some relations will be established, the links will appear in the footer of every web-page of your connected books.
