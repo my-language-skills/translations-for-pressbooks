@@ -68,6 +68,13 @@ If you need some help with understanding on how plugin was structured, take a lo
 ### Future
 
 ### Changelog
+#### 1.2.X
+* **ENHANCEMENTS**
+   * Hide not use languages
+
+* **List of Files revised**
+   * translations-for-pressbooks.php
+
 #### 1.2.1
 * **ENHANCEMENTS**
    * Create  folder assets and add folder flag-icon
