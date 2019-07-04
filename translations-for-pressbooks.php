@@ -5,7 +5,7 @@
 Plugin Name:  Translations for PressBooks
 Plugin URI:   https://developer.wordpress.org/plugins/the-basics/
 Description:  Add translations tools
-Version:      1.2.2
+Version:      1.2.3
 Author:       @huguespages (My Language Skills)
 Author URI:   https://developer.wordpress.org/
 License:      GPL 3.0
@@ -429,17 +429,6 @@ function pbc_check_trans($blog_id) {
 	//unknown bug fix
 	restore_current_blog();
  }
- /*
- * Auto update from github
- *
- * @since 1.2.1
- */
- require 'vendor/plugin-update-checker/plugin-update-checker.php';
- $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-     'https://github.com/my-language-skills/translations-for-pressbooks/',
-     __FILE__,
-     'translations-for-pressbooks'
- );
 
  ?>
 

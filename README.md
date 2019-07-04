@@ -68,6 +68,10 @@ If you need some help with understanding on how plugin was structured, take a lo
 ### Future
 
 ### Changelog
+#### 1.2.3
+* **REMOVED**
+    *  Auto update from github
+
 #### 1.2.2
 * **ENHANCEMENTS**
    * Hide not use languages
