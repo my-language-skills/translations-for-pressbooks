@@ -1,26 +1,43 @@
 <?php
 
-/*
+/**
+ * Translations for PressBooks
+ *
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * admin area. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
+ *
+ * @link              https://github.com/my-language-skills/translations-for-pressbooks
+ * @since             1.0
+ * @package           translations-for-pressbooks
+ *
+ * @wordpress-plugin
+ * Plugin Name:       Translations for PressBooks
+ * Plugin URI:        https://github.com/my-language-skills/translations-for-pressbooks
+ * Description:       Small enhancement for Pressbooks main plugin
+ * Version:           1.2.3
+ * Author:            My Language Skills team
+ * Author URI:        https://github.com/my-language-skills/
+ * License:           GPL 3.0
+ * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
+ * Text Domain:       translations-for-pressbooks
+ * Domain Path:       /languages
+ * Network: 					True
+ */
 
-Plugin Name:  Translations for PressBooks
-Plugin URI:   https://developer.wordpress.org/plugins/the-basics/
-Description:  Add translations tools
-Version:      1.2.3
-Author:       @huguespages (My Language Skills)
-Author URI:   https://developer.wordpress.org/
-License:      GPL 3.0
-License URI:  https://www.gnu.org/licenses/gpl-3.0.html
-Text Domain:  translations-for-pressbooks
-Domain Path:  /languages
-*/
 defined ("ABSPATH") or die ("No script assholes!");
 
 add_action('wp_ajax_efp_mark_as_original', 'tre_update_trans_table', 2);
 add_action('custom_metadata_manager_init_metadata', 'tre_create_language_box', 10);
 
 /**
- * Function responsible for creation/updating translations table in database
- */
+* Function responsible for creation/updating translations table in database
+*
+* @since
+*
+*/
+
 function tre_update_trans_table () {
 
 	//security check
@@ -115,10 +132,13 @@ function tre_update_trans_table () {
 	}
 }
 
-
 /**
- * Function for producing metabox for selecting translation language
- */
+* Function for producing metabox for selecting translation language
+*
+* @since
+*
+*/
+
 function tre_create_language_box () {
 
 	if (get_post_meta(tre_get_info_post(),'pb_is_based_on')) {
@@ -326,8 +346,12 @@ function tre_create_language_box () {
 }
 
 /**
- * Function for getting book info post ID
- */
+* Function for getting book info post ID
+*
+* @since
+*
+*/
+
 function tre_get_info_post () {
 
 	global $wpdb;
@@ -338,8 +362,12 @@ function tre_get_info_post () {
 }
 
 /**
- * Function to check if there are translations for this book
- */
+* Function to check if there are translations for this book
+*
+* @since
+*
+*/
+
 function pbc_check_trans($blog_id) {
 	global $wpdb;
  	global $wp;
@@ -368,8 +396,12 @@ function pbc_check_trans($blog_id) {
 }
 
 /**
- * Function for printing links to translations
- */
+* Function for printing links to translations
+*
+* @since
+*
+*/
+
  function pbc_print_trans_links($blog_id){
 
  	global $wpdb;
