@@ -1,6 +1,6 @@
 # Translations for PressBooks
 
-Contributors:  @danzhik, @hugues
+Contributors:  @danzhik, @hugues, @!ndeed
 
 Donate link: https://opencollective.com/mylanguageskills
 
@@ -39,6 +39,7 @@ The Translations For Pressbooks plugin works with:
  * ![extensions-for-pressbooks](https://github.com/my-language-skills/extensions-for-pressbooks/releases/tag/1.2)
  * ![PHP](https://img.shields.io/badge/PHP-7.2.X-blue.svg)
  * [![Pressbooks](https://img.shields.io/badge/Pressbooks-V%205.4.7-red.svg)](https://github.com/pressbooks/pressbooks/releases/tag/5.4.7)
+ * books4languages-book-child-theme-for-pressbooks latest v1.3 or newer.
 
 
 ## Disclaimers
@@ -59,15 +60,25 @@ If you need some help with understanding on how plugin was structured, take a lo
 
 * **List of Files revised**
 
-
 ### Soon
-
 
 ### Later
 
 ### Future
 
 ### Changelog
+
+## 1.2.4
+* **ADDITIONS**
+  * New functions: getOriginalBookLanguage() , getCurrentBookFlag() and getCurrentBookLanguageCode().
+
+* **ENHANCEMENTS**
+  * Modifies existing pbc_print_trans_links() function for needs of updated books4languages-book-child-theme-for-pressbooks v1.3 theme.
+  * Changes flag name from "cs.png" to cz.png
+
+* **List of Files revised**
+  * translations-for-pressbooks.php
+
 #### 1.2.3
 * **REMOVED**
     *  Auto update from github
@@ -84,15 +95,12 @@ If you need some help with understanding on how plugin was structured, take a lo
    * Create  folder assets and add folder flag-icon
 
 * **REMOVED**
-      * Original mark, now it's in extensions-for-pressbooks
+   * Original mark, now it's in extensions-for-pressbooks
 
 * **List of Files revised**
    * translations-for-pressbooks.php
 
-
 #### 1.2
-
-
 * **ADDITIONS**
 	* Languages names alphabetical organization #8
 

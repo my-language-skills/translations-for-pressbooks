@@ -16,7 +16,7 @@
  * Plugin Name:       Translations for PressBooks
  * Plugin URI:        https://github.com/my-language-skills/translations-for-pressbooks
  * Description:       Small enhancement for Pressbooks main plugin
- * Version:           1.2.3
+ * Version:           1.2.4
  * Author:            My Language Skills team
  * Author URI:        https://github.com/my-language-skills/
  * License:           GPL 3.0
@@ -401,8 +401,8 @@ function pbc_check_trans($blog_id) {
 * @since
 *
 */
-
- function pbc_print_trans_links($blog_id){
+/* print availible translations based on current book opened. Different print layouts for different page locations (header/ footer) */
+ function pbc_print_trans_links($blog_id, $translations_print_location){
 
  	global $wpdb;
  	global $wp;
@@ -438,22 +438,61 @@ function pbc_check_trans($blog_id) {
    $languageArrayObject = new ArrayObject($relations);
    $languageArrayObject->ksort();
 
- 		foreach ($languageArrayObject as $lang => $id) {
- 			$separator = $flag ? '|' : '';
- 			if ($id == $blog_id || $id == 0){
- 				continue;
- 			} elseif ($lang == 'a'){
- 				echo '<li><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'">'.__('Original Language', 'pressbooks-book').'</a></li>';
- 				$flag = 1;
- 				continue;
- 			}
+	 $current_lang_code = getCurrentBookLanguageCode();
+	 $origin_lang_code = getOriginalBookLanguage($blog_id);
 
- 			echo '<li>'.$separator.' <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'">'.$lang.'</a> </li>';
-			//transform the language code into flag picture but you have to comment the line before this
-			//echo '<li>'.$separator.' <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'"><img onmouseover="bigImg(this)" onmouseout="normalImg(this)"  width="16" height="11" src="/wp-content/plugins/extensions-for-pressbooks/assets/flag-icon/'.$lang.'.png" </a> </li>';
+	  if ($translations_print_location == "header"){
+		 foreach ($languageArrayObject as $lang => $id) {
 
- 			$flag = 1;
- 		}
+		 	 	 // For display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
+				 if ($lang == "cs"){$lang = "cz";}
+
+				 if ($id == $blog_id || $id == 0){
+					 // echo language code of currently selelected book
+					 echo '<li class="dropdown-content-selected-lang"><a href="#"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $current_lang_code . '.png">&nbsp;'. $current_lang_code . '</a></li>';
+					 continue;
+				 } elseif ($lang == 'a'){
+					 // echo language code of original book
+					 echo '<li ><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'" rel="nofollow"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $origin_lang_code . '.png">&nbsp;'. $origin_lang_code . ' ' . __('(original)', 'pressbooks-book').'</a></li>';
+					 $flag = 1;
+					 continue;
+				 }
+
+		   if ($flag == 0){
+				 // echo language of original book in case it is currently selected
+				 echo '<li class="dropdown-content-selected-lang"><a href="#"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $origin_lang_code . '.png">&nbsp;'. $origin_lang_code . ' ' . __('(original)', 'pressbooks-book').'</a></li>';
+			 }
+			 	// echo rest of the availible languages
+ 				echo '<li> <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'" rel="nofollow"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/'.$lang.'.png">&nbsp;'.$lang.'</a> </li>';
+  			$flag = 1;
+		 }
+
+	 } else if ($translations_print_location == "footer"){
+		 	foreach ($languageArrayObject as $lang => $id) {
+				 $separator = $flag ? '|' : '';
+
+				 // For display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
+				 if ($lang == "cs"){$lang = "cz";}
+
+				 if ($id == $blog_id || $id == 0){
+					 // echo language code of currently selelected book
+					 echo '<li class="footer-lang-selected" >'.$separator.' <a href="#">'.$lang.'</a> </li>';
+					 continue;
+				 } elseif ($lang == 'a'){
+					 // echo language code of original book
+					 echo '<li><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'">'. $origin_lang_code . ' ' .__('(original)', 'pressbooks-book').'</a></li>';
+					 $flag = 1;
+					 continue;
+				 }
+				 if ($flag == 0){
+					 // echo language of original book in case it is currently selected
+					 echo '<li class="footer-lang-selected">'.$separator.' <a href="#">'.$origin_lang_code.' ' .__('(original)', 'pressbooks-book').'</a>| </li>';
+					}
+					// echo rest of the availible languages
+				 echo '<li>'.$separator.' <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'">'.$lang.'</a> </li>';
+			 	 $flag = 1;
+			 }
+	 }
  	}
  	if ($source != 'original' && ($trans_lang == 'not_set' || $trans_lang == 'non_tr')){
  		echo '<li><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'">'.__('Original Book', 'pressbooks-book').'</a></li>';
@@ -462,6 +501,55 @@ function pbc_check_trans($blog_id) {
 	restore_current_blog();
  }
 
+// When called returns Language code of currently opened book.
+function getCurrentBookLanguageCode(){
+
+	$medium = get_metadata_by_mid('post' , '4');
+	$lang = $medium->meta_value;
+
+	// For display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
+		if ($lang == "cs"){$lang = "cz";}
+
+	return $lang;
+}
+
+// When called returns Language flag of currently opened book.
+function getCurrentBookFlag(){
+
+	$medium = get_metadata_by_mid('post' , '4');
+	$lang = $medium->meta_value;
+
+	//for display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
+		if ($lang == "cs"){$lang = "cz";}
+
+	return $langFlag = '<img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' .$lang. '.png">';
+}
+
+// Identify if current book is translation or not and get the source book ID and eventualy correct language code.
+function getOriginalBookLanguage($blog_id){
+
+	global $wpdb;
+ 	global $wp;
+
+	$source = get_post_meta(tre_get_info_post(), 'pb_is_based_on', true) ?: 'original';
+	if ($source == 'original'){
+	 $origin_id = $blog_id;
+ } else {
+	 $origin = str_replace(['http://', 'https://'], '', $source).'/';
+	 switch_to_blog(1);
+	 $origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
+	 restore_current_blog();
+ }
+ 	switch_to_blog($origin_id);
+	$medium = get_metadata_by_mid('post' , '4');
+	$lang = $medium->meta_value;
+
+	// For display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
+		if ($lang == "cs"){$lang = "cz";}
+
+	restore_current_blog();
+	return $lang;
+}
  ?>
 
  <?php
