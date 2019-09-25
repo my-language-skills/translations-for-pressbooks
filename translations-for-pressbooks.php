@@ -447,10 +447,12 @@ function pbc_check_trans($blog_id) {
 		 	 	 // For display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
 				 if ($lang == "cs"){$lang = "cz";}
 
-				 if ($id == $blog_id || $id == 0){
+				 if ($id == $blog_id){
 					 // echo language code of currently selelected book
 					 echo '<li class="dropdown-content-selected-lang"><a href="#"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $current_lang_code . '.png">&nbsp;'. $current_lang_code . '</a></li>';
 					 continue;
+				 } elseif ($id == 0) {
+						 continue;
 				 } elseif ($lang == 'a'){
 					 // echo language code of original book
 					 echo '<li ><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'" rel="nofollow"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $origin_lang_code . '.png">&nbsp;'. $origin_lang_code . ' ' . __('(original)', 'pressbooks-book').'</a></li>';
@@ -474,10 +476,12 @@ function pbc_check_trans($blog_id) {
 				 // For display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
 				 if ($lang == "cs"){$lang = "cz";}
 
-				 if ($id == $blog_id || $id == 0){
+				 if ($id == $blog_id){
 					 // echo language code of currently selelected book
 					 echo '<li class="footer-lang-selected" >'.$separator.' <a href="#">'.$lang.'</a> </li>';
 					 continue;
+				 } elseif ($id == 0) {
+						 continue;
 				 } elseif ($lang == 'a'){
 					 // echo language code of original book
 					 echo '<li><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'">'. $origin_lang_code . ' ' .__('(original)', 'pressbooks-book').'</a></li>';
