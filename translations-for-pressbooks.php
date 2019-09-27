@@ -16,7 +16,7 @@
  * Plugin Name:       Translations for PressBooks
  * Plugin URI:        https://github.com/my-language-skills/translations-for-pressbooks
  * Description:       Small enhancement for Pressbooks main plugin
- * Version:           1.2.4
+ * Version:           1.2.5
  * Author:            My Language Skills team
  * Author URI:        https://github.com/my-language-skills/
  * License:           GPL 3.0
@@ -27,6 +27,9 @@
  */
 
 defined ("ABSPATH") or die ("No script assholes!");
+
+include_once plugin_dir_path( __FILE__ ) . "translations-for-pressbooks-print-hreflang.php";
+include_once plugin_dir_path( __FILE__ ) . "translations-for-pressbooks-change-htmlang.php";
 
 add_action('wp_ajax_efp_mark_as_original', 'tre_update_trans_table', 2);
 add_action('custom_metadata_manager_init_metadata', 'tre_create_language_box', 10);
@@ -444,10 +447,7 @@ function pbc_check_trans($blog_id) {
 	  if ($translations_print_location == "header"){
 		 foreach ($languageArrayObject as $lang => $id) {
 
-		 	 	 // For display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
-				 if ($lang == "cs"){$lang = "cz";}
-
-				 if ($id == $blog_id){
+		 	 	 if ($id == $blog_id){
 					 // echo language code of currently selelected book
 					 echo '<li class="dropdown-content-selected-lang"><a href="#"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $current_lang_code . '.png">&nbsp;'. $current_lang_code . '</a></li>';
 					 continue;
@@ -473,10 +473,7 @@ function pbc_check_trans($blog_id) {
 		 	foreach ($languageArrayObject as $lang => $id) {
 				 $separator = $flag ? '|' : '';
 
-				 // For display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
-				 if ($lang == "cs"){$lang = "cz";}
-
-				 if ($id == $blog_id){
+		 		 if ($id == $blog_id){
 					 // echo language code of currently selelected book
 					 echo '<li class="footer-lang-selected" >'.$separator.' <a href="#">'.$lang.'</a> </li>';
 					 continue;
@@ -511,9 +508,6 @@ function getCurrentBookLanguageCode(){
 	$medium = get_metadata_by_mid('post' , '4');
 	$lang = $medium->meta_value;
 
-	// For display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
-		if ($lang == "cs"){$lang = "cz";}
-
 	return $lang;
 }
 
@@ -522,9 +516,6 @@ function getCurrentBookFlag(){
 
 	$medium = get_metadata_by_mid('post' , '4');
 	$lang = $medium->meta_value;
-
-	//for display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
-		if ($lang == "cs"){$lang = "cz";}
 
 	return $langFlag = '<img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' .$lang. '.png">';
 }
@@ -548,12 +539,7 @@ function getOriginalBookLanguage($blog_id){
 	$medium = get_metadata_by_mid('post' , '4');
 	$lang = $medium->meta_value;
 
-	// For display purposes. "cs" is not correct language code for Czech Republic. Remove after issue fix.
-		if ($lang == "cs"){$lang = "cz";}
-
 	restore_current_blog();
 	return $lang;
 }
  ?>
-
- <?php

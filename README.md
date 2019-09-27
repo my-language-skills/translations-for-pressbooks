@@ -68,6 +68,19 @@ If you need some help with understanding on how plugin was structured, take a lo
 
 ### Changelog
 
+## 1.2.5
+* **ADDITIONS**
+  * Functionality for printing hreflang tags of the available translations.
+  * Functionality for modifying default WP html lang tag
+
+* **ENHANCEMENTS**
+  * Remove condition which changes "cs" country code to "cz" and rename flags back accordingly.
+
+* **List of Files revised**
+  * added translations-for-pressbooks-change-htmlang.php
+  * added translations-for-pressbooks-print-hreflang.php
+  * added translations-for-pressbooks.php
+
 ## 1.2.4
 * **ADDITIONS**
   * New functions: getOriginalBookLanguage() , getCurrentBookFlag() and getCurrentBookLanguageCode().
