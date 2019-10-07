@@ -44,16 +44,18 @@ function printHreflangTags(){
   if(!empty($relations)){
     $languageArrayObject = new ArrayObject($relations);
 
+      echo "\n<!-- Translations for pressbooks -->\n";
       foreach ($languageArrayObject as $lang => $id) {
         if ($id == 0) {
             continue;
         } elseif ($lang == "a"){
-            echo "<link rel='alternate' hreflang='".getOriginalBookLanguage($blog_id)."' href='".str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link)."'/>\n";
             echo "<link rel='alternate' hreflang='x-default' href='".str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link)."'/>\n";
+            echo "<link rel='alternate' hreflang='".getOriginalBookLanguage($blog_id)."' href='".str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link)."'/>\n";
             continue;
         } else {
             echo "<link rel='alternate' hreflang='".$lang ."' href='".str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link)."'/>\n";
         }
       }
+      echo "<!-- Translations for pressbooks END -->\n\n";
     }
 }

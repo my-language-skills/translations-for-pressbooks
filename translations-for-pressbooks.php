@@ -522,10 +522,16 @@ function getCurrentBookFlag(){
 	$meta_key="pb_language";
 	$blog_id = get_current_blog_id();
 	switch_to_blog($blog_id);
- 	$lang = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
+ 	$flag = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
 	restore_current_blog();
 
-	return $langFlag = '<img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' .$lang. '.png">';
+	$flagPath = plugin_dir_path( __FILE__ ) . "assets/flag-icon/$flag.png";
+
+	if (file_exists($flagPath)) {
+	    return $langFlag = '<img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $flag . '.png">';
+	} else {
+	   return;
+	}
 }
 
 // Identify if current book is translation or not and get the source book ID and eventualy correct language code.
