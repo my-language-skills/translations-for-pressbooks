@@ -230,7 +230,7 @@ function tre_create_language_box () {
 					// 'iu'     => 'Inuktitut', //not attribut flag icons right now
 					'ja'     => 'Japanese',
 					// 'jv'     => 'Javanese', //not attribut flag icons right now
-					// 'ka'     => 'Georgian', //not attribut flag icons right now
+					'ka'     => 'Georgian', //not attribut flag icons right now
 					// 'kg'     => 'Kongo', //not attribut flag icons right now
 					// 'ki'     => 'Kikuyu; Gikuyu', //not attribut flag icons right now
 					// 'kj'     => 'Kuanyama; Kwanyama', //not attribut flag icons right now
@@ -324,7 +324,7 @@ function tre_create_language_box () {
 					// 'tw'     => 'Twi', //not attribut flag icons right now
 					// 'ty'     => 'Tahitian', //not attribut flag icons right now
 					// 'ug'     => 'Uighur; Uyghur', //not attribut flag icons right now
-					// 'uk'     => 'Ukrainian', //not attribut flag icons right now
+					'uk'     => 'Ukrainian', //not attribut flag icons right now
 					// 'ur'     => 'Urdu', //not attribut flag icons right now
 					// 'uz'     => 'Uzbek', //not attribut flag icons right now
 					// 'vl'     => 'Valencian', //not attribut flag icons right now
