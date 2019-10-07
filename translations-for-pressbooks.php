@@ -505,8 +505,12 @@ function pbc_check_trans($blog_id) {
 // When called returns Language code of currently opened book.
 function getCurrentBookLanguageCode(){
 
-	$medium = get_metadata_by_mid('post' , '4');
-	$lang = $medium->meta_value;
+	global $wpdb;
+	$meta_key="pb_language";
+	$blog_id = get_current_blog_id();
+	switch_to_blog($blog_id);
+ 	$lang = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
+	restore_current_blog();
 
 	return $lang;
 }
@@ -514,8 +518,12 @@ function getCurrentBookLanguageCode(){
 // When called returns Language flag of currently opened book.
 function getCurrentBookFlag(){
 
-	$medium = get_metadata_by_mid('post' , '4');
-	$lang = $medium->meta_value;
+	global $wpdb;
+	$meta_key="pb_language";
+	$blog_id = get_current_blog_id();
+	switch_to_blog($blog_id);
+ 	$lang = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
+	restore_current_blog();
 
 	return $langFlag = '<img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' .$lang. '.png">';
 }
@@ -535,11 +543,13 @@ function getOriginalBookLanguage($blog_id){
 	 $origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
 	 restore_current_blog();
  }
- 	switch_to_blog($origin_id);
-	$medium = get_metadata_by_mid('post' , '4');
-	$lang = $medium->meta_value;
 
+	global $wpdb;
+	$meta_key="pb_language";
+	switch_to_blog($origin_id);
+ 	$lang = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
 	restore_current_blog();
+
 	return $lang;
 }
  ?>
