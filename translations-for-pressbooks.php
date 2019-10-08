@@ -528,7 +528,7 @@ function getCurrentBookFlag(){
 	$flagPath = plugin_dir_path( __FILE__ ) . "assets/flag-icon/$flag.png";
 
 	if (file_exists($flagPath)) {
-	    return $langFlag = '<img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $flag . '.png">';
+		 return $langFlag = '<img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $flag . '.png">';
 	} else {
 	   return;
 	}

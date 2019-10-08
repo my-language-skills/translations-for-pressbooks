@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This manual gives brief explainations on features of the plugin, which could be useful for developement of your website and for understanding how to recieve desired behaviour of a plugin.
+This manual gives brief explanations on features of the plugin, which could be useful for development of your website and for understanding how to receive desired behaviour of a plugin.
 
 
 ## Translations relations
@@ -22,7 +22,7 @@ In case you are creating translations of your books, 'Translations relations' ca
 
 For more translations repeat steps from 2 to 5 in the list above.
 
-From database interaction point of view, all these steps make some impcat on table of translations relations. When you mark original book with `Original Mark` table creates new row, responsible for series of the translations. After, when you mark translation with `Original Mark` after all required steps, the `id` of that book is added as value in corresponding column in original book row. That's why it is **important** for step 5 to be performed strictly after step 2-4, unless you would like to make this cloned book a root for another series of translations. Otherwise, translated book will be accounted as book in original language, which will start new translations series.
+From database interaction point of view, all these steps make some impact on table of translations relations. When you mark original book with `Original Mark` table creates new row, responsible for series of the translations. After, when you mark translation with `Original Mark` after all required steps, the `id` of that book is added as value in corresponding column in original book row. That's why it is **important** for step 5 to be performed strictly after step 2-4, unless you would like to make this cloned book a root for another series of translations. Otherwise, translated book will be accounted as book in original language, which will start new translations series.
 
 ### Deleting translations
 
@@ -37,8 +37,12 @@ If by mistake you have put the wrong language of a book in point 3 of working st
 1. Go to `Book Info` page of that book, change language of a book to a desired one in `General Book Information` metabox.
 1. Go back to `/wp-admin/network/sites.php` page and mark translated book as `Featured Book`. *Wait until notification!*
 
+**Note!** In case you will not unmark the book before changing the language in book info, it will not remove old language choice and will keep it in the table. In this case, manually remove unwanted column from the DB.
+
+**Note!** Upon changing the language of the book, the previous language column in the DB table stays there with the value "0".
+
 ### Printing links in web-pages
-If you want to printing the links of traduction in web-pages, you just have to copy past this lines.
+If you want to print the links of translation in web-pages, you just have to copy & paste these lines.
 
 	<ul class="footer__pressbooks__links__list" style="margin-bottom: 1rem;">
 	<?php
