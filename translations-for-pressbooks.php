@@ -16,7 +16,7 @@
  * Plugin Name:       Translations for PressBooks
  * Plugin URI:        https://github.com/my-language-skills/translations-for-pressbooks
  * Description:       Small enhancement for Pressbooks main plugin
- * Version:           1.2.5
+ * Version:           1.2.6
  * Author:            My Language Skills team
  * Author URI:        https://github.com/my-language-skills/
  * License:           GPL 3.0
@@ -28,8 +28,11 @@
 
 defined ("ABSPATH") or die ("No script assholes!");
 
-include_once plugin_dir_path( __FILE__ ) . "translations-for-pressbooks-print-hreflang.php";
-include_once plugin_dir_path( __FILE__ ) . "translations-for-pressbooks-change-htmlang.php";
+include_once plugin_dir_path( __FILE__ ) . "tfp-print-hreflang.php";
+include_once plugin_dir_path( __FILE__ ) . "tfp-change-htmlang.php";
+include_once plugin_dir_path( __FILE__ ) . "tfp-translation-enabler.php";
+include_once plugin_dir_path( __FILE__ ) . "tfp-network-settings.php";
+include_once plugin_dir_path( __FILE__ ) . "uninstall.php";
 
 add_action('wp_ajax_efp_mark_as_original', 'tre_update_trans_table', 2);
 add_action('custom_metadata_manager_init_metadata', 'tre_create_language_box', 10);
@@ -437,7 +440,8 @@ function pbc_check_trans($blog_id) {
 
  	$current_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
  	$flag = 0;
- 	if(!empty($relations)){
+
+if(!empty($relations)){
    $languageArrayObject = new ArrayObject($relations);
    $languageArrayObject->ksort();
 
@@ -501,6 +505,48 @@ function pbc_check_trans($blog_id) {
 	//unknown bug fix
 	restore_current_blog();
  }
+
+ /**
+  * Functionality called from the front-end. Checks if both 'tfp_book_translation_enable' and 'tfp_post_translation_enable' are enabled.
+  * If yes (value in DB is '1') we return "1" meaning it is enabled..
+	*
+  * @since 1.2.6
+  *
+  */
+function check_if_translations_enabled(){
+
+// first check if translation option for current book is enabled
+$tfp_book_translation_enable = get_option( 'tfp_book_translation_enable' );
+
+// second check if translation option for current post is enabled
+// for the cover page we want to get post_meta from book-info page. Folowed functionality finds out if we are on cover page, if yes we get data from book-info (metadata) page (not cover page)
+global $wpdb;
+$current_post_id = get_the_ID();
+
+$table_name = $wpdb->prefix . 'posts';
+$cover_id =  $wpdb->get_row("SELECT ID FROM $table_name WHERE post_name = 'cover';");
+$cover_id = get_object_vars($cover_id);
+$cover_id = reset($cover_id);
+
+//if $current_post_id and $cover_id are equal we change post_id from where to get translation option.
+if($current_post_id == $cover_id){
+	$table_name = $wpdb->prefix . 'posts';
+	$book_info_id = $wpdb->get_row("SELECT ID FROM $table_name WHERE post_name = 'book-information';");
+	$book_info_id = get_object_vars($book_info_id);
+	$book_info_id = reset($book_info_id);
+	$tfp_post_translation_enable = get_post_meta($book_info_id, 'tfp_post_translation_enable', true);
+	} else {
+	global $post;
+	$tfp_post_translation_enable = get_post_meta($post->ID, 'tfp_post_translation_enable', true);
+}
+
+//if book translation and post translation are both enabled we display translations option.
+if ($tfp_book_translation_enable == "1" && $tfp_post_translation_enable == "1"){
+	return "1";
+	} else {
+	return;
+	}
+}
 
 // When called returns Language code of currently opened book.
 function getCurrentBookLanguageCode(){

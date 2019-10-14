@@ -19,7 +19,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 Extended core functionalities for Pressbooks
 
 ## Description
- The last, but not the least feature, of this plugin is creation connections between original books and their translations (this feature will only work if trnaslations of books are created with cloning tool of Pressbooks).
+ Feature, of this plugin is creation connections between original books and their translations (this feature will only work if translations of books are created with cloning tool of Pressbooks). With extensions-for-pressbooks v1.2.4 installation we are able to enable/disable translations for specific book and also of specific post.
 
 As plugin is supposed to be used with our [child theme](https://github.com/my-language-skills/books4languages-book-child-theme-for-pressbooks), the plugin also will set up this theme for all newly created books if theme is installed and network active.
 
@@ -36,10 +36,10 @@ For upgrades, download the las stable version from github, delete from FTP the o
 
 The Translations For Pressbooks plugin works with:
 
- * ![extensions-for-pressbooks](https://github.com/my-language-skills/extensions-for-pressbooks/releases/tag/1.2)
+ * ![extensions-for-pressbooks](https://github.com/my-language-skills/extensions-for-pressbooks/releases/tag/1.2.4)
  * ![PHP](https://img.shields.io/badge/PHP-7.2.X-blue.svg)
  * [![Pressbooks](https://img.shields.io/badge/Pressbooks-V%205.4.7-red.svg)](https://github.com/pressbooks/pressbooks/releases/tag/5.4.7)
- * books4languages-book-child-theme-for-pressbooks latest v1.3 or newer.
+ * books4languages-book-child-theme-for-pressbooks latest v1.4 or newer.
 
 
 ## Disclaimers
@@ -67,6 +67,23 @@ If you need some help with understanding on how plugin was structured, take a lo
 ### Future
 
 ### Changelog
+
+## 1.2.6
+* **ADDITIONS**
+  * Functionality for control of displaying translations options in the front-end (book and post level). More info in user-manual.
+  * Functionality which removes all the plugin data from DB on plugin uninstall (with option to keep the data if we want to). More info in user-manual.
+
+* **ENHANCEMENTS**
+  * Updated user-manual to provide up to date setup information.
+
+* **List of Files revised**
+  * translations-for-pressbooks.php
+  * translations-for-pressbooks-change-htmlang.php renamed to tfp-change-htmlang.php
+  * translations-for-pressbooks-print-hreflang.php renamed to tfp-print-hreflang.php
+  * added tfp-network-settings.php
+  * added tfp-translation-enabler.php
+  * added uninstall.php
+  * user-manual.php
 
 ## 1.2.5
 * **ADDITIONS**

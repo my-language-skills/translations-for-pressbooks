@@ -42,7 +42,11 @@ If by mistake you have put the wrong language of a book in point 3 of working st
 **Note!** Upon changing the language of the book, the previous language column in the DB table stays there with the value "0".
 
 ### Printing links in web-pages
-If you want to print the links of translation in web-pages, you just have to copy & paste these lines.
+If you want to print the links of translation in front-end them, you need to check if translations for current book and post is set to enabled from back-end settings with function *check_if_translations_enabled()*. Function returns "1" if translations are enabled.
+For printing only current language Flag use: *getCurrentBookFlag()*.
+For printing only current language Code use: *getCurrentBookLanguageCode()*.
+Next function *pbc_print_trans_links()* prints out list of available translations in current context.
+
 
 	<ul class="footer__pressbooks__links__list" style="margin-bottom: 1rem;">
 	<?php
@@ -55,3 +59,19 @@ If you want to print the links of translation in web-pages, you just have to cop
 **Note!** Do not change permalinks in your translations, otherwise links will lead to non-existing pages in other books.
 
 In order for the links to be shown in the front-end of a website, use our [theme](https://github.com/my-language-skills/books4languages-book-child-theme-for-pressbooks). Since some relations will be established, the links will appear in the footer of every web-page of your connected books.
+
+
+### Translations activation WORKFLOW with DESCRIPTION:
+
+# After activation extensions-for-pressbooks plugin and translations-for-pressbooks plugin.
+
+1. On a site (book) level go to Appearance-> EFP Customizations.
+2. Here in 'Translations section' check on 'Display translations' to display 	translations in the front-end.
+# Translations for this book is now enabled for metadata(cover/book-info), front-matter , chapter , part,  back-matter.
+
+3. After checking this option it is now possible to enable/ disable showing translations option for each post separately in post-edit page (chapter, book-info,...). By default every post is set to enable (display) translations option.
+4. To disable/ enable post translations option go to post-edit page of the specific post.
+5. By default, every time 'Display translations' is re-enabled in 'Appearance-> EFP Customizations', default post translations settings are generated in DB (every post gets translations option enabled). If those options were modified and we want to keep those changes (post translations option) saved after re-enable of 'Display translations' option it is necessary to check 'Save previous post values' in 'Appearance-> EFP Customizations' in 'Translations section'.
+# With this option turned on every time 'Display translations' (book translations) is now re-enabled, previous post translations options are persisted.
+
+6. By default on plugin uninstall all the data plugin created in DB are erased. In order to keep this data after plugin gets uninstalled go to Network admin, Settings -> EFP settings and check 'Persist data on uninstall' checkbox.
