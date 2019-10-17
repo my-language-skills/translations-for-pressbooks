@@ -41,7 +41,7 @@ function tfp_init_book_trans_section(){
 
 	 	add_settings_section( 'translations_section',
 	 												'Translations section',
-	 												'theme_section_description',
+	 												'translations_section_description',
 	 												'theme-customizations');
 
 		add_settings_field(	'tfp_book_translation_enable',
@@ -70,7 +70,7 @@ function tfp_init_book_trans_section(){
  * @since 1.2.6
  *
  */
-function theme_section_description(){
+function translations_section_description(){
 	echo '<p>In order to see translations in the front-end it is necessary to enable "Display translations" option for each BOOK. </p>';
 	echo '<p>Every time "Display translations" is enabled, every POST translation selections gets enabled automatically.</p>';
 	echo '<p>In order to keep previous POST translations selections check "Save previous post values".</p>';
