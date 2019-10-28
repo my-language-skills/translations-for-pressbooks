@@ -71,9 +71,11 @@ function tfp_init_book_trans_section(){
  *
  */
 function translations_section_description(){
-	echo '<p>In order to see translations in the front-end it is necessary to enable "Display translations" option for each BOOK. </p>';
-	echo '<p>Every time "Display translations" is enabled, every POST translation selections gets enabled automatically.</p>';
-	echo '<p>In order to keep previous POST translations selections check "Save previous post values".</p>';
+ ?>
+	 <p> <?php _e('In order to see translations in the front-end it is necessary to enable "Display translations" option for each BOOK', 'pressbooks-book');?></p>
+	 <p> <?php _e('If "Save previous post values" is disabled, every POST translation selections gets enabled automatically.', 'pressbooks-book');?></p>
+	 <p> <?php _e('In order to keep previous POST translations selections check "Save previous post values".', 'pressbooks-book');?></p>
+ <?php
 }
 
 /**
@@ -189,6 +191,6 @@ function generate_post_translation_entries(  ){
 	$posts = get_posts($args);
 
 	foreach ($posts as $key => $ID) {
-		 add_post_meta( $ID, 'tfp_post_translation_enable', '1', true );
+		 update_post_meta( $ID, 'tfp_post_translation_enable', '1', false);
 	}
 }

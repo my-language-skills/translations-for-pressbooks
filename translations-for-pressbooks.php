@@ -35,7 +35,7 @@ include_once plugin_dir_path( __FILE__ ) . "tfp-network-settings.php";
 include_once plugin_dir_path( __FILE__ ) . "uninstall.php";
 
 add_action('wp_ajax_efp_mark_as_original', 'tre_update_trans_table', 2);
-add_action('custom_metadata_manager_init_metadata', 'tre_create_language_box', 10);
+add_action('admin_init', 'tre_create_language_box');
 
 /**
 * Function responsible for creation/updating translations table in database

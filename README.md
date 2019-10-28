@@ -75,6 +75,11 @@ If you need some help with understanding on how plugin was structured, take a lo
 
 * **ENHANCEMENTS**
   * Updated user-manual to provide up to date setup information.
+  * Some Internationalization
+
+* **BUGFIXES**
+  * Post translations were not freshly set to enable after "Display translations" enabled while "Save previous post values" disabled
+  * add_action hook changed
 
 * **List of Files revised**
   * translations-for-pressbooks.php
