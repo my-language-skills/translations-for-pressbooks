@@ -36,7 +36,7 @@ function tfp_render_translations_section(){
                         'net_translations_section'); //add settings field to the translations_section
 
 		// add 	DB entry in sitemeta table
-    add_site_option('tfp_uninstall_save',0);
+    add_site_option('tfp_uninstall_save',1);
 }
 
 function net_section_description(){

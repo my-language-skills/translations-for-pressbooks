@@ -508,7 +508,7 @@ if(!empty($relations)){
 
  /**
   * Functionality called from the front-end. Checks if both 'tfp_book_translation_enable' and 'tfp_post_translation_enable' are enabled.
-  * If yes (value in DB is '1') we return "1" meaning it is enabled..
+  * If yes (values in DB is '1') we return "1" meaning it is enabled..
 	*
   * @since 1.2.6
   *
@@ -531,17 +531,19 @@ $cover_id = reset($cover_id);
 //if $current_post_id and $cover_id are equal we change post_id from where to get translation option.
 if($current_post_id == $cover_id){
 	$table_name = $wpdb->prefix . 'posts';
-	$book_info_id = $wpdb->get_row("SELECT ID FROM $table_name WHERE post_name = 'book-information';");
-	$book_info_id = get_object_vars($book_info_id);
-	$book_info_id = reset($book_info_id);
-	$tfp_post_translation_enable = get_post_meta($book_info_id, 'tfp_post_translation_enable', true);
+	$book_info_id = $wpdb->get_row("SELECT ID FROM $table_name WHERE post_name = 'book-info' OR post_name = 'book-information';");
+	if(isset($book_info_id)){ // IF  book-info or book-information post found
+		$book_info_id = get_object_vars($book_info_id);
+		$book_info_id = reset($book_info_id);
+		$tfp_post_translation_enable = get_post_meta($book_info_id, 'tfp_post_translation_enable', true);
+	}
 	} else {
 	global $post;
 	$tfp_post_translation_enable = get_post_meta($post->ID, 'tfp_post_translation_enable', true);
 }
 
-//if book translation and post translation are both enabled we display translations option.
-if ($tfp_book_translation_enable == "1" && $tfp_post_translation_enable == "1"){
+//if book translation and post translation are both set and enabled we display translations option.
+if (isset($tfp_post_translation_enable) && isset($tfp_book_translation_enable) && $tfp_book_translation_enable == "1" && $tfp_post_translation_enable == "1"){
 	return "1";
 	} else {
 	return;

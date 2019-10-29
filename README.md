@@ -6,9 +6,9 @@ Donate link: https://opencollective.com/mylanguageskills
 
 Tags: wordpress, multisite, pressbooks
 
-Tested up to: [![WordPress](https://img.shields.io/wordpress/v/akismet.svg)](https://wordpress.org/download/)
+Tested up to WP: v5.2.4
 
-Requires:  [![Pressbooks](https://img.shields.io/badge/Pressbooks-V%205.4.7-red.svg)](https://github.com/pressbooks/pressbooks/releases/tag/5.3)
+Tested up to: v5.9.5 [![Pressbooks](https://img.shields.io/badge/Pressbooks-V%205.4.7-red.svg)](https://github.com/pressbooks/pressbooks/releases/tag/5.9.5)
 
 Stable tag: [![Current Release](https://img.shields.io/github/release/my-language-skills/extensions-for-pressbooks.svg)](https://github.com/my-language-skills/extensions-for-pressbooks/releases/latest/)
 
@@ -27,6 +27,7 @@ As plugin is supposed to be used with our [child theme](https://github.com/my-la
 
 1. Clone (or copy) this repository folder `translations-for-pressbooks` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' screen in WordPress
+1. In order to activate translations for certain book it is necessary to enable it in 'EFP Customization' settings page
 
 ## Upgrades
 
@@ -80,6 +81,8 @@ If you need some help with understanding on how plugin was structured, take a lo
 * **BUGFIXES**
   * Post translations were not freshly set to enable after "Display translations" enabled while "Save previous post values" disabled
   * add_action hook changed
+  * Network setting option for saving plugin data after plugin uninstall now set to 'enabled' by default
+  * Updated querry now accepts both "book-information" and "book-info" post names
 
 * **List of Files revised**
   * translations-for-pressbooks.php
