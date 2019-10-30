@@ -539,7 +539,9 @@ if($current_post_id == $cover_id){
 	}
 	} else {
 	global $post;
-	$tfp_post_translation_enable = get_post_meta($post->ID, 'tfp_post_translation_enable', true);
+	if (isset($post->ID)){
+			$tfp_post_translation_enable = get_post_meta($post->ID, 'tfp_post_translation_enable', true);
+	}
 }
 
 //if book translation and post translation are both set and enabled we display translations option.
