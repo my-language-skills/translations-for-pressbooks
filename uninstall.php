@@ -24,7 +24,8 @@ function tfp_clear_plugin_data(){
 		$args = array(
 		    'fields'          => 'ids',
 				'posts_per_page'  => -1,
-				'post_type' => $post_types
+				'post_type' => $post_types,
+				'number' => 500
 			);
 
 		$sites = get_sites($args);

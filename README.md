@@ -84,6 +84,7 @@ If you need some help with understanding on how plugin was structured, take a lo
   * Network setting option for saving plugin data after plugin uninstall now set to 'enabled' by default
   * Updated querry now accepts both "book-information" and "book-info" post names
   * Check if 'tfp_post_translation_enable' related to current post exists (table-of-contents)
+  * Increase number of sites in uninstall functionality to 500
 
 * **List of Files revised**
   * translations-for-pressbooks.php
