@@ -9,9 +9,11 @@ This manual gives brief explanations on features of the plugin, which could be u
 
 In case you are creating translations of your books, 'Translations relations' can help you with automatic linking between all of the the translations and original book. For current moment plugin logically interconnects only books about languages.
 
-### Adding new translations
+### Adding translations
 
-**Read carefully the following instructions and follow them one by one, otherwise it can lead to incorrect working result of a plugin!** The working steps to create relations between you books are following:
+**Read carefully the following instructions and follow them one by one, otherwise it can lead to incorrect working result of a plugin!**
+
+The working steps to create relations between you books are following:
 
 1. With use of `Original Mark` tick the checkbox in `/wp-admin/network/sites.php` `Featured Book` column in front of book in original language. *Wait until notification!*
 1. Go to `Book Info` page of a book which is a translation (this book **must** be created with `Cloning Tool` using original book as a source), allocate `Studying Content` metabox (if book was not cloned, this metabox will not be shown) and choose which language is this book about.
@@ -30,7 +32,7 @@ In order to delete book from relational system, just simply unmark `Featured Boo
 
 If you would like to drop all the relations of series of book and its translations, unmark `Featured Book` checkbox in `/wp-admin/network/sites.php` in front of original book. *Be careful!* After this all the translation will also be unmarked as featured books.
 
-### Changing language of translated book
+### Changing language of translations
 
 If by mistake you have put the wrong language of a book in point 3 of working steps and you would like to change it to a correct one, in order to keep the consistent relations do following:
 1. Go to `/wp-admin/network/sites.php` and unmark translated book in `Featured Book` column. *Wait until notification!*
@@ -41,7 +43,8 @@ If by mistake you have put the wrong language of a book in point 3 of working st
 
 **Note!** Upon changing the language of the book, the previous language column in the DB table stays there with the value "0".
 
-### Printing links in web-pages
+## Theme outpud of information
+
 If you want to print the links of translation in front-end them, you need to check if translations for current book and post is set to enabled from back-end settings with function *check_if_translations_enabled()*. Function returns "1" if translations are enabled.
 For printing only current language Flag use: *getCurrentBookFlag()*.
 For printing only current language Code use: *getCurrentBookLanguageCode()*.
@@ -61,7 +64,7 @@ Next function *pbc_print_trans_links()* prints out list of available translation
 In order for the links to be shown in the front-end of a website, use our [theme](https://github.com/my-language-skills/books4languages-book-child-theme-for-pressbooks). Since some relations will be established, the links will appear in the footer of every web-page of your connected books.
 
 
-### Translations activation WORKFLOW with DESCRIPTION:
+## WORKFLOW:
 
 # After activation extensions-for-pressbooks plugin and translations-for-pressbooks plugin.
 
