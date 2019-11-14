@@ -17,6 +17,7 @@
  * Plugin URI:        https://github.com/my-language-skills/translations-for-pressbooks
  * Description:       Small enhancement for Pressbooks main plugin
  * Version:           1.2.6
+ * Pressbooks tested up to: 5.10
  * Author:            My Language Skills team
  * Author URI:        https://github.com/my-language-skills/
  * License:           GPL 3.0
