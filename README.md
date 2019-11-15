@@ -39,6 +39,7 @@ The Translations For Pressbooks plugin works with:
  * [extensions-for-pressbooks](https://github.com/my-language-skills/extensions-for-pressbooks) v1.2.2 or newer.
  * [books4languages-book-child-theme-for-pressbooks](https://github.com/my-language-skills/books4languages-book-child-theme-for-pressbooks) latest v1.4.4 or newer.
 
+## Frequently Asked Questions
 
 ## Frequently Asked Questions
 

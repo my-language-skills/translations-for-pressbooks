@@ -47,13 +47,12 @@ If by mistake you have put the wrong language of a book in point 3 of working st
 
 **Note!** Upon changing the language of the book, the previous language column in the DB table stays there with the value "0".
 
-<<<<<<< HEAD
 ### Printing links in web-pages
 If you want to print the links of translation in front-end them, you need to check if translations for current book and post is set to enabled from back-end settings with function *tfp_checkIfTranslationsEnabled()*. Function returns "1" if translations are enabled.
 For printing only current language Flag use: *tfp_getCurrentBookFlag()*.
 For printing only current language Code use: *tfp_getCurrentBookLanguageCode()*.
 Next function *tfp_printTransLinks()* prints out list of available translations in current context.
-=======
+
 ## Front-end information
 
 By default, Translations for PressBooks just works inside of the HTML tag <head>. If your theme is integrated with Translations for PressBooks, the translations can be activate in the front-end of the book. After the activation, the translations will work in two places: in the header of the theme (a dropwown menu) and as a list of language codes in the footer.
@@ -75,7 +74,7 @@ To disable/ enable post translations option at post level:
 By default, every time 'Display translations' is re-enabled in 'Appearance-> EFP Customizations', default post translations settings are generated in DB (every post gets translations option enabled). If those options were modified and we want to keep those changes (post translations option) saved after re-enable of 'Display translations' option it is necessary to check 'Save previous post values' in 'Appearance-> EFP Customizations' in 'Translations section'.
 # With this option turned on every time 'Display translations' (book translations) is now re-enabled, previous post translations options are persisted.
 
-### Theme outpud of information
+### Theme output of information
 
 Featured books and non featured books can use the translations options.
 * If the book is featured, the book ID will be added to the list of languages of the menu,
@@ -83,12 +82,14 @@ Featured books and non featured books can use the translations options.
 
 #### Translations integration in the Theme Header
 
-
 If you want to print the links of translation in the front-end of your theme, you need to check if translations for current book and post is set to enabled from back-end settings with function *tfp_checkIfTranslationsEnabled()*. Function returns "1" if translations are enabled.
 For printing only current language Flag use: *tfp_getCurrentBookFlag()*.
 For printing only current language Code use: *tfp_getCurrentBookLanguageCode()*.
 Next function *tfp_printTransLinks()* prints out list of available translations in current context.
->>>>>>> fa6007e3ed6a785d6f59ecffb20341c6be7717b3
+
+Featured books and non featured books can use the translations options.
+* If the book is featured, the book ID will be added to the list of languages of the menu,
+* If the book is not featured, the book ID will not be added to the list of languages of the menu. The id of the available feature books languages will be used instead.
 
 **Note!** Header print of relationships can not be used in a theme without a strong modification.
 
