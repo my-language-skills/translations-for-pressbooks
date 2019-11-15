@@ -1,4 +1,5 @@
 === Translations for PressBooks ===
+Contributors: colomet, danzhik, dcazzorla, lukastonhajzer
 Donate link: https://opencollective.com/mylanguageskills
 Tags: multisite, pressbooks, translations, internacionalization, wordpress plugin
 Requires at least: 3.0.1
