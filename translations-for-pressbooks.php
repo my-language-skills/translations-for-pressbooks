@@ -16,7 +16,8 @@
  * Plugin Name:       Translations for PressBooks
  * Plugin URI:        https://github.com/my-language-skills/translations-for-pressbooks
  * Description:       Small enhancement for Pressbooks main plugin
- * Version:           1.2.6
+ * Version:           1.2.7
+ * Pressbooks tested up to: 5.10
  * Author:            My Language Skills team
  * Author URI:        https://github.com/my-language-skills/
  * License:           GPL 3.0
@@ -34,8 +35,8 @@ include_once plugin_dir_path( __FILE__ ) . "tfp-translation-enabler.php";
 include_once plugin_dir_path( __FILE__ ) . "tfp-network-settings.php";
 include_once plugin_dir_path( __FILE__ ) . "uninstall.php";
 
-add_action('wp_ajax_efp_mark_as_original', 'tre_update_trans_table', 2);
-add_action('admin_init', 'tre_create_language_box');
+add_action('wp_ajax_efp_mark_as_original', 'tfp_updateTransTable', 2);
+add_action('admin_init', 'tfp_createLanguageBox');
 
 /**
 * Function responsible for creation/updating translations table in database
@@ -44,7 +45,7 @@ add_action('admin_init', 'tre_create_language_box');
 *
 */
 
-function tre_update_trans_table () {
+function tfp_updateTransTable () {
 
 	//security check
 	if ( ! current_user_can( 'manage_network' ) || ! check_ajax_referer( 'pressbooks-aldine-admin' ) ) {
@@ -53,21 +54,21 @@ function tre_update_trans_table () {
 
 	global $wpdb;
 
+
+	if (!empty($_POST['book_id'])){ // validate
+		$post_book_id = $_POST[book_id];
+	}
+
 	$table_name = $wpdb->prefix . 'trans_rel'; //table in database
 
 	//>> check if the book was marked as translation of another book
-
-	switch_to_blog($_POST['book_id']);
-
-	$info_post_id = tre_get_info_post();
-
-	$trans_lang = get_post_meta($info_post_id, 'efp_trans_language') ?: 'not_set';
-	//<<
-
+	switch_to_blog($post_book_id);
+		$info_post_id = tfp_getInfoPost();
+		$trans_lang = get_post_meta($info_post_id, 'efp_trans_language') ?: 'not_set';
 	switch_to_blog( 1 );
 
 	//if book was marked as original, not unmarked
-	if (1 == get_blog_option($_POST['book_id'], 'efp_publisher_is_original')){
+	if (1 == get_blog_option($post_book_id, 'efp_publisher_is_original')){
 
 		//if book was not marked as translation, create a new row in translations table
 		if ($trans_lang == 'non_tr' || $trans_lang == 'not_set') {
@@ -87,54 +88,49 @@ function tre_update_trans_table () {
 				dbDelta( $sql );
 			}
 
-			$wpdb->insert( $table_name, [ 'a' => absint( $_POST['book_id'] ) ] );
+				$wpdb->insert( $table_name, [ 'a' => absint( $post_book_id ) ] );
 
 		} elseif(isset($trans_lang)) {
-			//book is a translation, add it as a translation to original one
+				//book is a translation, add it as a translation to original one
 
-			//get translation's language
-			switch_to_blog($_POST['book_id']);
-			$lang = get_post_meta($info_post_id, 'pb_language', true);
-			$origin = str_replace(['http://', 'https://'], '', get_post_meta($info_post_id, 'pb_is_based_on', true)).'/';
-			//The str_replace() function replaces some characters with some other characters in a string.
-			// str_replace(find,replace,string,count)
+				//get translation's language
+				switch_to_blog($post_book_id);
+				$lang = get_post_meta($info_post_id, 'pb_language', true);
+				$origin = str_replace(['http://', 'https://'], '', get_post_meta($info_post_id, 'pb_is_based_on', true)).'/';
+				//The str_replace() function replaces some characters with some other characters in a string.
+				// str_replace(find,replace,string,count)
 
-			//>> Add column if not present.
-			switch_to_blog(1);
-			$check = $wpdb->get_row("SELECT * FROM $table_name;");
-//Isset The isset () function is used to check whether a variable is set or not.
-// If a variable is already unset with unset() function, it will no longer be set.
-//The isset() function return false if testing variable contains a NULL value.
+				//>> Add column if not present.
+				switch_to_blog(1);
+				$check = $wpdb->get_row("SELECT * FROM $table_name;");
 
-//! $a 	Not (Non) 	TRUE si $a n'est pas TRUE.
-			if(!isset($check->$lang)){
-   			 	$wpdb->query("ALTER TABLE $table_name ADD $lang BIGINT(20);");
-			}
-			//<<
+				//! $a 	Not (Non) 	TRUE si $a n'est pas TRUE.
+				if(!isset($check->$lang)){
+	   			 	$wpdb->query("ALTER TABLE $table_name ADD $lang BIGINT(20);");
+				}
+				//<<
 
-			$origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
-
-			$wpdb->query("UPDATE $table_name SET $lang = '$_POST[book_id]' WHERE `a` = '$origin_id';");
-
+				$origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
+				$wpdb->query("UPDATE $table_name SET $lang = '$post_book_id' WHERE `a` = '$origin_id';");
 		}
+
 	} else {
 
 		if ($trans_lang == 'non_tr' || $trans_lang == 'not_set'){
-			$trans = $wpdb->get_row("SELECT * FROM $table_name WHERE `a` = '$_POST[book_id]';", ARRAY_A);
+			$trans = $wpdb->get_row("SELECT * FROM $table_name WHERE `a` = '$post_book_id';", ARRAY_A);
 			unset($trans['a']);
-			$wpdb->query("DELETE FROM $table_name WHERE `a` = '$_POST[book_id]'");
+			$wpdb->query("DELETE FROM $table_name WHERE `a` = '$post_book_id'");
 			foreach ($trans as $tran){
 				delete_blog_option($tran, 'efp_publisher_is_original');
 			}
 		} elseif (isset($trans_lang)) {
-			switch_to_blog($_POST['book_id']);
+			switch_to_blog($post_book_id);
 			$origin = str_replace(['http://', 'https://'], '', get_post_meta($info_post_id, 'pb_is_based_on', true)).'/';
 			$lang = get_post_meta($info_post_id, 'pb_language', true);
 			switch_to_blog(1);
 			$origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
 			$wpdb->query("UPDATE $table_name SET `$lang` = '' WHERE `a` = '$origin_id';");
 		}
-
 	}
 }
 
@@ -145,9 +141,9 @@ function tre_update_trans_table () {
 *
 */
 
-function tre_create_language_box () {
+function tfp_createLanguageBox () {
 
-	if (get_post_meta(tre_get_info_post(),'pb_is_based_on')) {
+	if (get_post_meta(tfp_getInfoPost(),'pb_is_based_on')) {
 
 		x_add_metadata_group( 'efp_trans', 'metadata', array(
 			'label'    => 'Studying content',
@@ -358,13 +354,11 @@ function tre_create_language_box () {
 *
 */
 
-function tre_get_info_post () {
-
+function tfp_getInfoPost () {
 	global $wpdb;
 	$info_post = $wpdb->get_results("SELECT `ID` FROM $wpdb->posts WHERE `post_type` = 'metadata' LIMIT 1", ARRAY_A);
 
 	return isset($info_post[0]['ID']) ? $info_post[0]['ID'] : 0;
-
 }
 
 /**
@@ -374,26 +368,27 @@ function tre_get_info_post () {
 *
 */
 
-function pbc_check_trans($blog_id) {
+function tfp_checkTrans($blog_id) {
 	global $wpdb;
  	global $wp;
 
  	//>> identify if book is translation or not and get the source book ID
  	switch_to_blog($blog_id);
- 	$trans_lang = get_post_meta(tre_get_info_post(), 'efp_trans_language') ?: 'not_set';
- 	$source = get_post_meta(tre_get_info_post(), 'pb_is_based_on', true) ?: 'original';
- 	if ($source == 'original'){
- 		$origin_id = $blog_id; // origin id is the id for the original book
- 	} else {
- 		$origin = str_replace(['http://', 'https://'], '', $source).'/';
-		switch_to_blog(1);
-		$origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
-	}
-	//<<
-	//fetching all related translations
- 	switch_to_blog(1);
- 	$relations = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}trans_rel WHERE `a` = '$origin_id'", ARRAY_A);
- 	restore_current_blog();
+	 	$trans_lang = get_post_meta(tfp_getInfoPost(), 'efp_trans_language') ?: 'not_set';
+	 	$source = get_post_meta(tfp_getInfoPost(), 'pb_is_based_on', true) ?: 'original';
+	 	if ($source == 'original'){
+	 		$origin_id = $blog_id; // origin id is the id for the original book
+	 	} else {
+	 		$origin = str_replace(['http://', 'https://'], '', $source).'/';
+			switch_to_blog(1);
+				$origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
+			}
+			//<<
+		//fetching all related translations
+ 	 switch_to_blog(1);
+ 			$relations = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}trans_rel WHERE `a` = '$origin_id'", ARRAY_A);
+	 restore_current_blog();
+
  	if (!empty($relations)){
  		return true;
  	} else {
@@ -408,68 +403,72 @@ function pbc_check_trans($blog_id) {
 *
 */
 /* print availible translations based on current book opened. Different print layouts for different page locations (header/ footer) */
- function pbc_print_trans_links($blog_id, $translations_print_location){
+ function tfp_printTransLinks($blog_id, $translations_print_location){
 
  	global $wpdb;
  	global $wp;
 
+	$toprint = "";
  	//>> identify if book is translation or not and get the source book ID
  	switch_to_blog($blog_id);
- 	$trans_lang = get_post_meta(tre_get_info_post(), 'efp_trans_language') ?: 'not_set';
- 	$source = get_post_meta(tre_get_info_post(), 'pb_is_based_on', true) ?: 'original';
- 	if ($source == 'original'){
- 		$origin_id = $blog_id;
- 	} else {
- 		$origin = str_replace(['http://', 'https://'], '', $source).'/';
-		switch_to_blog(1);
-		$origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
-		restore_current_blog();
+	 	$trans_lang = get_post_meta(tfp_getInfoPost(), 'efp_trans_language') ?: 'not_set';
+	 	$source = get_post_meta(tfp_getInfoPost(), 'pb_is_based_on', true) ?: 'original';
+	 	if ($source == 'original'){
+	 		$origin_id = $blog_id;
+	 	} else {
+	 		$origin = str_replace(['http://', 'https://'], '', $source).'/';
+			switch_to_blog(1);
+				$origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
+			restore_current_blog();
 
-	}
-	//<<
-	//fetching all related translations
- 	switch_to_blog(1);
-// SELECT column_name FROM information_schema.columns WHERE table_name = 'pb_int_wp_trans_rel' AND table_schema='colomet_pb_int' ORDER BY column_name ASC
-// SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS  WHERE TABLE_NAME LIKE 'pb_int_wp_trans_rel' ORDER BY column_name ASC
- 	$relations = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}trans_rel WHERE `a` = '$origin_id'", ARRAY_A);
- 	restore_current_blog(); //Contrary to the function's name, this does NOT restore the original blog but the previous blog. Calling `switch_to_blog()` twice in a row and then calling this function will result in being on the blog set by the first `switch_to_blog()` call.
+		}
+		//<<
+
+		//fetching all related translations
+	 	switch_to_blog(1);
+			// SELECT column_name FROM information_schema.columns WHERE table_name = 'pb_int_wp_trans_rel' AND table_schema='colomet_pb_int' ORDER BY column_name ASC
+			// SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS  WHERE TABLE_NAME LIKE 'pb_int_wp_trans_rel' ORDER BY column_name ASC
+			$relations = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}trans_rel WHERE `a` = '$origin_id'", ARRAY_A);
+ 		restore_current_blog(); //Contrary to the function's name, this does NOT restore the original blog but the previous blog. Calling `switch_to_blog()` twice in a row and then calling this function will result in being on the blog set by the first `switch_to_blog()` call.
  	//if book is orginal, unset 'id' property, as no need to point itself
+
  	if($source == 'original'){
  		unset($relations['a']);
  	}
 
  	$current_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
  	$flag = 0;
+	$flagUrl = plugin_dir_url( __FILE__ ) . "assets/flag-icon/";
 
 if(!empty($relations)){
    $languageArrayObject = new ArrayObject($relations);
    $languageArrayObject->ksort();
 
-	 $current_lang_code = getCurrentBookLanguageCode();
-	 $origin_lang_code = getOriginalBookLanguage($blog_id);
+	 $current_lang_code = tfp_getCurrentBookLanguageCode();
+	 $origin_lang_code = tfp_getOriginalBookLanguage($blog_id);
 
 	  if ($translations_print_location == "header"){
 		 foreach ($languageArrayObject as $lang => $id) {
 
 		 	 	 if ($id == $blog_id){
 					 // echo language code of currently selelected book
-					 echo '<li class="dropdown-content-selected-lang"><a href="#"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $current_lang_code . '.png">&nbsp;'. $current_lang_code . '</a></li>';
+					 $toprint .= '<li class="dropdown-content-selected-lang"><a href="#"><img width="16" height="11" src=" '. $flagUrl .'' . $current_lang_code . '.png">&nbsp;'. $current_lang_code . '</a></li>';
 					 continue;
 				 } elseif ($id == 0) {
 						 continue;
 				 } elseif ($lang == 'a'){
 					 // echo language code of original book
-					 echo '<li ><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'" rel="nofollow"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $origin_lang_code . '.png">&nbsp;'. $origin_lang_code . ' ' . __('(original)', 'pressbooks-book').'</a></li>';
+					 $toprint .= '<li ><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'" rel="nofollow"><img width="16" height="11" src=" '. $flagUrl .'' . $origin_lang_code . '.png">&nbsp;'. $origin_lang_code . ' ' . __('(original)', 'pressbooks-book').'</a></li>';
 					 $flag = 1;
 					 continue;
 				 }
 
 		   if ($flag == 0){
 				 // echo language of original book in case it is currently selected
-				 echo '<li class="dropdown-content-selected-lang"><a href="#"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $origin_lang_code . '.png">&nbsp;'. $origin_lang_code . ' ' . __('(original)', 'pressbooks-book').'</a></li>';
+				 $toprint .= '<li class="dropdown-content-selected-lang"><a href="#"><img width="16" height="11" src=" '. $flagUrl .'' . $origin_lang_code . '.png">&nbsp;'. $origin_lang_code . ' ' . __('(original)', 'pressbooks-book').'</a></li>';
 			 }
 			 	// echo rest of the availible languages
- 				echo '<li> <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'" rel="nofollow"><img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/'.$lang.'.png">&nbsp;'.$lang.'</a> </li>';
+ 				$toprint .= '<li> <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'" rel="nofollow"><img width="16" height="11" src=" '. $flagUrl .''.$lang.'.png">&nbsp;'.$lang.'</a> </li>';
   			$flag = 1;
 		 }
 
@@ -479,131 +478,133 @@ if(!empty($relations)){
 
 		 		 if ($id == $blog_id){
 					 // echo language code of currently selelected book
-					 echo '<li class="footer-lang-selected" >'.$separator.' <a href="#">'.$lang.'</a> </li>';
+					 $toprint .= '<li class="footer-lang-selected" >'.$separator.' <a href="#">'.$lang.'</a> </li>';
 					 continue;
 				 } elseif ($id == 0) {
 						 continue;
 				 } elseif ($lang == 'a'){
 					 // echo language code of original book
-					 echo '<li><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'">'. $origin_lang_code . ' ' .__('(original)', 'pressbooks-book').'</a></li>';
+					 $toprint .= '<li><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'">'. $origin_lang_code . ' ' .__('(original)', 'pressbooks-book').'</a></li>';
 					 $flag = 1;
 					 continue;
 				 }
 				 if ($flag == 0){
 					 // echo language of original book in case it is currently selected
-					 echo '<li class="footer-lang-selected">'.$separator.' <a href="#">'.$origin_lang_code.' ' .__('(original)', 'pressbooks-book').'</a>| </li>';
+					 $toprint .= '<li class="footer-lang-selected">'.$separator.' <a href="#">'.$origin_lang_code.' ' .__('(original)', 'pressbooks-book').'</a>| </li>';
 					}
 					// echo rest of the availible languages
-				 echo '<li>'.$separator.' <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'">'.$lang.'</a> </li>';
+				 $toprint .= '<li>'.$separator.' <a href="'.str_replace(get_blog_details(get_current_blog_id())->path, get_blog_details($id)->path, $current_link).'">'.$lang.'</a> </li>';
 			 	 $flag = 1;
 			 }
 	 }
  	}
  	if ($source != 'original' && ($trans_lang == 'not_set' || $trans_lang == 'non_tr')){
- 		echo '<li><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'">'.__('Original Book', 'pressbooks-book').'</a></li>';
+ 		$toprint .= '<li><a href="'.$source.'/'.add_query_arg( array(), $wp->request ).'">'.__('Original Book', 'pressbooks-book').'</a></li>';
  	}
-	//unknown bug fix
 	restore_current_blog();
+	echo $toprint;
  }
 
- /**
-  * Functionality called from the front-end. Checks if both 'tfp_book_translation_enable' and 'tfp_post_translation_enable' are enabled.
-  * If yes (values in DB is '1') we return "1" meaning it is enabled..
-	*
-  * @since 1.2.6
-  *
-  */
-function check_if_translations_enabled(){
+/**
+* Functionality called from the front-end. Checks if both 'tfp_book_translation_enable' and 'tfp_post_translation_enable' are enabled.
+* If yes (values in DB is '1') we return "1" meaning it is enabled..
+*
+* @since 1.2.6
+*
+*/
+	function tfp_checkIfTranslationsEnabled(){
 
-// first check if translation option for current book is enabled
-$tfp_book_translation_enable = get_option( 'tfp_book_translation_enable' );
+		// first check if translation option for current book is enabled
+		$tfp_book_translation_enable = get_option( 'tfp_book_translation_enable' );
 
-// second check if translation option for current post is enabled
-// for the cover page we want to get post_meta from book-info page. Folowed functionality finds out if we are on cover page, if yes we get data from book-info (metadata) page (not cover page)
-global $wpdb;
-$current_post_id = get_the_ID();
+		// second check if translation option for current post is enabled
+		// for the cover page we want to get post_meta from book-info page. Folowed functionality finds out if we are on cover page, if yes we get data from book-info (metadata) page (not cover page)
+		global $wpdb;
+		$current_post_id = get_the_ID();
 
-$table_name = $wpdb->prefix . 'posts';
-$cover_id =  $wpdb->get_row("SELECT ID FROM $table_name WHERE post_name = 'cover';");
-$cover_id = get_object_vars($cover_id);
-$cover_id = reset($cover_id);
+		$table_name = $wpdb->prefix . 'posts';
+		$cover_id =  $wpdb->get_row("SELECT ID FROM $table_name WHERE post_name = 'cover';");
+		$cover_id = get_object_vars($cover_id);
+		$cover_id = reset($cover_id);
 
-//if $current_post_id and $cover_id are equal we change post_id from where to get translation option.
-if($current_post_id == $cover_id){
-	$table_name = $wpdb->prefix . 'posts';
-	$book_info_id = $wpdb->get_row("SELECT ID FROM $table_name WHERE post_name = 'book-info' OR post_name = 'book-information';");
-	if(isset($book_info_id)){ // IF  book-info or book-information post found
-		$book_info_id = get_object_vars($book_info_id);
-		$book_info_id = reset($book_info_id);
-		$tfp_post_translation_enable = get_post_meta($book_info_id, 'tfp_post_translation_enable', true);
-	}
-	} else {
-	global $post;
-	if (isset($post->ID)){
-			$tfp_post_translation_enable = get_post_meta($post->ID, 'tfp_post_translation_enable', true);
-	}
-}
+		//if $current_post_id and $cover_id are equal we change post_id from where to get translation option.
+		if($current_post_id == $cover_id){
+			$table_name = $wpdb->prefix . 'posts';
+			$book_info_id = $wpdb->get_row("SELECT ID FROM $table_name WHERE post_name = 'book-info' OR post_name = 'book-information';");
+			if(isset($book_info_id)){ // IF  book-info or book-information post found
+				$book_info_id = get_object_vars($book_info_id);
+				$book_info_id = reset($book_info_id);
+				$tfp_post_translation_enable = get_post_meta($book_info_id, 'tfp_post_translation_enable', true);
+			}
+			} else {
+				global $post;
+				if (isset($post->ID)){
+						$tfp_post_translation_enable = get_post_meta($post->ID, 'tfp_post_translation_enable', true);
+				}
+		}
 
-//if book translation and post translation are both set and enabled we display translations option.
-if (isset($tfp_post_translation_enable) && isset($tfp_book_translation_enable) && $tfp_book_translation_enable == "1" && $tfp_post_translation_enable == "1"){
-	return "1";
-	} else {
-	return;
-	}
+		//if book translation and post translation are both set and enabled we display translations option.
+		if (isset($tfp_post_translation_enable) && isset($tfp_book_translation_enable) && $tfp_book_translation_enable == "1" && $tfp_post_translation_enable == "1"){
+			return "1";
+		} else {
+			return;
+			}
 }
 
 // When called returns Language code of currently opened book.
-function getCurrentBookLanguageCode(){
+function tfp_getCurrentBookLanguageCode(){
 
 	global $wpdb;
 	$meta_key="pb_language";
 	$blog_id = get_current_blog_id();
+
 	switch_to_blog($blog_id);
- 	$lang = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
+ 		$lang = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
 	restore_current_blog();
 
 	return $lang;
 }
 
 // When called returns Language flag of currently opened book.
-function getCurrentBookFlag(){
+function tfp_getCurrentBookFlag(){
 
 	global $wpdb;
 	$meta_key="pb_language";
 	$blog_id = get_current_blog_id();
+
 	switch_to_blog($blog_id);
- 	$flag = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
+ 		$flag = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
 	restore_current_blog();
 
 	$flagPath = plugin_dir_path( __FILE__ ) . "assets/flag-icon/$flag.png";
+	$flagUrl = plugin_dir_url( __FILE__ ) . "assets/flag-icon/$flag.png";
 
 	if (file_exists($flagPath)) {
-		 return $langFlag = '<img width="16" height="11" src="/wp-content/plugins/translations-for-pressbooks/assets/flag-icon/' . $flag . '.png">';
+		 return $langFlag = '<img width="16" height="11" src="' . $flagUrl . '">';
 	} else {
 	   return;
 	}
 }
 
 // Identify if current book is translation or not and get the source book ID and eventualy correct language code.
-function getOriginalBookLanguage($blog_id){
+function tfp_getOriginalBookLanguage($blog_id){
 
 	global $wpdb;
  	global $wp;
 
-	$source = get_post_meta(tre_get_info_post(), 'pb_is_based_on', true) ?: 'original';
+	$source = get_post_meta(tfp_getInfoPost(), 'pb_is_based_on', true) ?: 'original';
 	if ($source == 'original'){
 	 $origin_id = $blog_id;
  } else {
 	 $origin = str_replace(['http://', 'https://'], '', $source).'/';
 	 switch_to_blog(1);
-	 $origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
+	 	$origin_id = $wpdb->get_results("SELECT `blog_id` FROM $wpdb->blogs WHERE CONCAT(`domain`, `path`) = '$origin'", ARRAY_A)[0]['blog_id'];
 	 restore_current_blog();
  }
 
-	global $wpdb;
 	$meta_key="pb_language";
 	switch_to_blog($origin_id);
- 	$lang = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
+ 		$lang = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , $meta_key) );
 	restore_current_blog();
 
 	return $lang;

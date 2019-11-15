@@ -1,20 +1,18 @@
 # Translations for PressBooks
 
-Contributors:  @danzhik, @hugues, @!ndeed
+Contributors:  
 
-Donate link: https://opencollective.com/mylanguageskills
-
-Tags: wordpress, multisite, pressbooks
-
-Tested up to WP: v5.2.4
-
-Tested up to: v5.9.5 [![Pressbooks](https://img.shields.io/badge/Pressbooks-V%205.4.7-red.svg)](https://github.com/pressbooks/pressbooks/releases/tag/5.9.5)
-
-Stable tag: [![Current Release](https://img.shields.io/github/release/my-language-skills/extensions-for-pressbooks.svg)](https://github.com/my-language-skills/extensions-for-pressbooks/releases/latest/)
-
-License:  [![License](https://img.shields.io/badge/license-GPL--3.0-red.svg)](https://github.com/my-language-skills/all-in-one-metadata/blob/master/LICENSE.txt)
-
-License URI: http://www.gnu.org/licenses/gpl-3.0.txt
+* Contributors: @colomet, @danzhik, @hugues, @lukastonhajzer
+* Donate link: https://opencollective.com/mylanguageskills
+* Tags: wordpress, multisite, pressbooks
+* Requires at least: 5.2
+* Tested up to: 5.3 WordPress
+* Tested up to 5.9.5 PressBooks
+* Requires PHP: 5.6
+* Stable tag: 1.2.7
+* License: GNU 3.0
+* License URI: https://www.gnu.org/licenses/gpl-3.0.html
+* Gutenberg: compatible
 
 Extended core functionalities for Pressbooks
 
@@ -37,11 +35,12 @@ For upgrades, download the las stable version from github, delete from FTP the o
 
 The Translations For Pressbooks plugin works with:
 
- * ![extensions-for-pressbooks](https://github.com/my-language-skills/extensions-for-pressbooks/releases/tag/1.2.4)
- * ![PHP](https://img.shields.io/badge/PHP-7.2.X-blue.svg)
- * [![Pressbooks](https://img.shields.io/badge/Pressbooks-V%205.4.7-red.svg)](https://github.com/pressbooks/pressbooks/releases/tag/5.4.7)
- * books4languages-book-child-theme-for-pressbooks latest v1.4 or newer.
+ * [Pressbooks](https://github.com/pressbooks/pressbooks)
+ * [extensions-for-pressbooks](https://github.com/my-language-skills/extensions-for-pressbooks) v1.2.2 or newer.
+ * [books4languages-book-child-theme-for-pressbooks](https://github.com/my-language-skills/books4languages-book-child-theme-for-pressbooks) latest v1.4.4 or newer.
 
+
+## Frequently Asked Questions
 
 ## Disclaimers
 
@@ -68,6 +67,10 @@ If you need some help with understanding on how plugin was structured, take a lo
 ### Future
 
 ### Changelog
+## 1.2.7
+* **ADDITIONS**
+  * Functions prefixing, data validation and code format enhancements
+  * Changing to dynamic pathways for plugin directory
 
 ## 1.2.6
 * **ADDITIONS**
@@ -110,10 +113,10 @@ If you need some help with understanding on how plugin was structured, take a lo
 
 ## 1.2.4
 * **ADDITIONS**
-  * New functions: getOriginalBookLanguage() , getCurrentBookFlag() and getCurrentBookLanguageCode().
+  * New functions: tfp_getOriginalBookLanguage() , tfp_getCurrentBookFlag() and tfp_getCurrentBookLanguageCode().
 
 * **ENHANCEMENTS**
-  * Modifies existing pbc_print_trans_links() function for needs of updated books4languages-book-child-theme-for-pressbooks v1.3 theme.
+  * Modifies existing tfp_printTransLinks() function for needs of updated books4languages-book-child-theme-for-pressbooks v1.3 theme.
   * Changes flag name from "cs.png" to cz.png
 
 * **List of Files revised**

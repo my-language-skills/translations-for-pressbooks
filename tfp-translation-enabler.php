@@ -3,7 +3,7 @@
  * This file is responsible for compact management of the Displaying translation options in the front-end.
  * Works with conjunction of extensions-for-pressbooks plugin v1.2.4
  * Creates setting section in EFP Customization menu and 'Display post translations' metabox in post-edit page.
- * Also is responsible for generate_post_translation_entries in the DB.
+ * Also is responsible for tfp_generatePostTranslationEntries in the DB.
  *
  * @package           translations for pressbooks
  * @since             1.2.6
@@ -12,20 +12,19 @@
 
 defined ("ABSPATH") or die ("Action denied!");
 
-
 if ((1 != get_current_blog_id()	|| !is_multisite()) && is_plugin_active('pressbooks/pressbooks.php')){
 		if (is_plugin_active('extensions-for-pressbooks/extensions-for-pressbooks.php')) {
-			add_action('admin_init','tfp_init_book_trans_section');
+			add_action('admin_init','tfp_initBookTransSection');
 			if ( isset( $_REQUEST['settings-updated'])  && ("theme-customizations" == $_REQUEST['page']) ) {
 					if("1" == $book_translation_enable = get_option( 'tfp_book_translation_enable' ) && "1" != $post_translations_save = get_option( 'tfp_post_translations_save' )){
-							generate_post_translation_entries(); // generate translation entries in DB on 'Display translations' checkbox enable.
+							tfp_generatePostTranslationEntries(); // generate translation entries in DB on 'Display translations' checkbox enable.
 					}
 			}
 		}
 
 		if ( "1" == $option = get_option( 'tfp_book_translation_enable' )){
 			// If 'Display translations' checkbox enabled render metabox in post-edit page (chapters, book-info...).
-			add_action('custom_metadata_manager_init_metadata', 'tfp_init_post_translations_section');
+			add_action('custom_metadata_manager_init_metadata', 'tfp_initPostTranslationsSection');
 		}
 }
 
@@ -37,24 +36,24 @@ if ((1 != get_current_blog_id()	|| !is_multisite()) && is_plugin_active('pressbo
  * @since 1.2.6
  *
  */
-function tfp_init_book_trans_section(){
+function tfp_initBookTransSection(){
 
 	 	add_settings_section( 'translations_section',
 	 												'Translations section',
-	 												'translations_section_description',
+	 												'tfp_translationsSectionDescription',
 	 												'theme-customizations');
 
 		add_settings_field(	'tfp_book_translation_enable',
-												'Display translations',
-												'tfp_book_translation_callback',
+												'Display translations menu',
+												'tfp_bookTranslationCallback',
 												'theme-customizations',
 												'translations_section'); //add settings field to the translations_section
 
-		add_option('tfp_book_translation_enable',0); // add theme option to database
+		add_option( 'tfp_book_translation_enable',0); // add theme option to database
 
 		add_settings_field(	'tfp_post_translations_save',
-												'Save previous post values',
-												'tfp_save_post_translations_callback',
+												'Post translations',
+												'tfp_postTranslationsCallback',
 												'theme-customizations',
 												'translations_section');//add settings field to the translations_section
 
@@ -70,12 +69,8 @@ function tfp_init_book_trans_section(){
  * @since 1.2.6
  *
  */
-function translations_section_description(){
- ?>
-	 <p> <?php _e('In order to see translations in the front-end it is necessary to enable "Display translations" option for each BOOK', 'pressbooks-book');?></p>
-	 <p> <?php _e('If "Save previous post values" is disabled, every POST translation selections gets enabled automatically.', 'pressbooks-book');?></p>
-	 <p> <?php _e('In order to keep previous POST translations selections check "Save previous post values".', 'pressbooks-book');?></p>
- <?php
+function tfp_translationsSectionDescription(){
+ //TODO
 }
 
 /**
@@ -84,41 +79,40 @@ function translations_section_description(){
  * @since 1.2.6
  *
  */
-function tfp_book_translation_callback(){
+function tfp_bookTranslationCallback(){
 	$option = get_option( 'tfp_book_translation_enable' );
-	echo '<input name="tfp_book_translation_enable" id="tfp_book_translation_enable" type="checkbox" value="1" class="code" ' . checked( 1, $option, false ) . ' /> Check to enable translations for this BOOK.';
+	$toprint = '<input name="tfp_book_translation_enable" id="tfp_book_translation_enable" type="checkbox" value="1" class="code" ' . checked( 1, $option, false ) . ' /> Enable translations in front-end <br> <i>If the book is not featured, translations will not point to this book.</i>' ;
+	echo $toprint;
 }
 
 /**
- * Save section settings to the DB.
+ * Render post translations field in Translations section
  *
  * @since 1.2.6
  *
  */
-function tfp_save_post_translations_callback(){
+function tfp_postTranslationsCallback(){
+	$option = get_option( 'tfp_post_translations_save' );
+	$toprint = "";
+
 	if ("1" == $tfp_book_translation_enable = get_option( 'tfp_book_translation_enable' )) {
-
-		$option = get_option( 'tfp_post_translations_save' );
-		echo '<input name="tfp_post_translations_save" id="tfp_post_translations_save" type="checkbox" value="1" ' . checked( 1, $option, false )  . ' class="code"  /> Check to keep POST translations selections saved.';
-
+		$toprint .= '<input name="tfp_post_translations_save" id="tfp_post_translations_save" type="checkbox" value="1" ' . checked( 1, $option, false )  . ' class="code"  />Keep post translations selections saved on Display translations menu reactivation.';
 	} else {
-
-		$option = get_option( 'tfp_post_translations_save' );
-			// Enable 'tfp_post_translations_save' checkbox only if 'tfp_book_translation_enable' is enabled.
+		// Enable 'tfp_post_translations_save' checkbox only if 'tfp_book_translation_enable' is enabled.
 		if ($option == "1"){
-			echo '<style>#tfp_post_translations_save{ display:none; } </style>';
-			echo '<input name="tfp_post_translations_save" id="tfp_post_translations_save" type="checkbox" value="1" ' . checked( 1, $option, false )  . ' class="code"  /> ';
-			echo '<input type="checkbox" value="1" checked="checked" class="code" disabled /> Check to keep POST translations selections saved. (To modify enable "Display translations")';
+			$toprint .= '<style>#tfp_post_translations_save{ display:none; } </style>';
+			$toprint .= '<input name="tfp_post_translations_save" id="tfp_post_translations_save" type="checkbox" value="1" ' . checked( 1, $option, false )  . ' class="code"  /> ';
+			$toprint .= '<input type="checkbox" value="1" checked="checked" class="code" disabled />Keep post translations selections saved on Display translations menu reactivation.';
 		} else {
-			echo '<style>#tfp_post_translations_save{ display:none; } </style>';
-			echo '<input name="tfp_post_translations_save" id="tfp_post_translations_save" type="checkbox" value="1" ' . checked( 1, $option, false )  . ' class="code"  /> ';
-			echo '<input type="checkbox" value="1"  class="code" disabled /> Check to keep POST translations selections saved.   (To modify enable "Display translations") ';
+			$toprint .= '<style>#tfp_post_translations_save{ display:none; } </style>';
+			$toprint .= '<input name="tfp_post_translations_save" id="tfp_post_translations_save" type="checkbox" value="1" ' . checked( 1, $option, false )  . ' class="code"  /> ';
+			$toprint .= '<input type="checkbox" value="1"  class="code" disabled /> Keep post translations selections saved on Display translations menu reactivation. ';
 		}
 	}
+		echo $toprint;
 }
 
-
-/* --- POST translations --- */
+/* --- POST-edit page translations --- */
 
 /**
  * Initializes metabox in post-edit page.
@@ -126,9 +120,9 @@ function tfp_save_post_translations_callback(){
  * @since 1.2.6
  *
  */
-function tfp_init_post_translations_section () {
+function tfp_initPostTranslationsSection () {
 		$post_types = ['metadata','front-matter','chapter','part', 'back-matter'];
-		add_meta_box( 'tre_translation_checkbox', 'Display post translations', 'tfp_render_post_metabox', $post_types, 'side', 'low');
+		add_meta_box( 'tre_translation_checkbox', 'Display post translations', 'tfp_renderPostMetabox', $post_types, 'side', 'low');
 }
 
 /**
@@ -137,19 +131,20 @@ function tfp_init_post_translations_section () {
  * @since 1.2.6
  *
  */
-function tfp_render_post_metabox(){
-
+function tfp_renderPostMetabox(){
     global $post;
     $custom = get_post_custom($post->ID);
 		$result = get_post_meta($post->ID, 'tfp_post_translation_enable', true);
-  	if ($result != "1"){
+
+		if ($result != "1"){
       add_post_meta( $post->ID, 'tfp_post_translation_enable', '1', true );
     }
 
 		$option = get_post_meta($post->ID, 'tfp_post_translation_enable', true);
-
 		echo '<input name="tfp_post_translation_enable" id="tfp_post_translation_enable" type="checkbox" value="1" class="code" ' . checked( 1, $option, false ) . ' /> Check to enable for this post.';
 }
+
+/* --- RELATED FUNCTIONS --- */
 
 /**
  * Save post option from 'Post translations display' checkbox on post-edit page.
@@ -157,20 +152,18 @@ function tfp_render_post_metabox(){
  * @since 1.2.6
  *
  */
-function save_post_option($post_ID = 0) {
+function tfp_savePostTranslationOption($post_ID = 0) {
     $post_ID = (int) $post_ID;
     $post_type = get_post_type( $post_ID );
     $post_status = get_post_status( $post_ID );
 
-    if ($post_type) {
-    update_post_meta($post_ID, "tfp_post_translation_enable", $_POST["tfp_post_translation_enable"]);
+    if ($post_type && isset($_POST["tfp_post_translation_enable"])) { //validate
+    	update_post_meta($post_ID, "tfp_post_translation_enable", $_POST["tfp_post_translation_enable"]);
     }
    return $post_ID;
 }
-add_action('save_post', 'save_post_option');
 
-
-/* --- FUNCTIONS --- */
+add_action('save_post', 'tfp_savePostTranslationOption');
 
 /**
  * Function for generating post translation DB entries on Book translations enable ('Display translations' on EFP Customizations page)
@@ -178,8 +171,7 @@ add_action('save_post', 'save_post_option');
  * @since 1.2.6
  *
  */
-function generate_post_translation_entries(  ){
-
+function tfp_generatePostTranslationEntries(  ){
 	$post_types = ['metadata','front-matter','chapter','part', 'back-matter'];
 
 	$args = array(

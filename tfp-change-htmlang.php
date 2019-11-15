@@ -10,11 +10,9 @@
 
 defined ("ABSPATH") or die ("No script assholes!");
 
-global $sitepress;
+add_filter( 'language_attributes', 'tfp_changeHeaderLanguageAttribute');
 
-add_filter( 'language_attributes', 'mycustom_language_attributes');
-
-function mycustom_language_attributes( $output ){
+function tfp_changeHeaderLanguageAttribute( $output ){
   if ( preg_match( '#lang="[a-z-]+"#i', $output ) ) {
     if(strrpos ( $output , 'en-US' )){
       $output = preg_replace( '#lang="([a-z-]+)"#i', 'lang="en"', $output );
