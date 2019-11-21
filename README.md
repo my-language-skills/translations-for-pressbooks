@@ -73,6 +73,16 @@ If you need some help with understanding on how plugin was structured, take a lo
   * Functions prefixing, data validation and code format enhancements
   * Changing to dynamic pathways for plugin directory
 
+* **MODIFICATIONS**
+  * Switched logic of enabling/disabling translations in post-edit page (now when checked translations are disabled for that post)
+  * Some functions optimized
+
+  * **REMOVED**
+  * Admin EFP settings field related to saving posts translations values (enabled/disabled) and related functionality.
+
+* **BUGFIXES**
+  * Uninstall functionality
+
 ## 1.2.6
 * **ADDITIONS**
   * Functionality for control of displaying translations options in the front-end (book and post level). More info in user-manual.

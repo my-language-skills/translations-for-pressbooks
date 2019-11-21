@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Translations for PressBooks
  * Plugin URI:        https://github.com/my-language-skills/translations-for-pressbooks
- * Description:       Small enhancement for Pressbooks main plugin
+ * Description:       Generates and displays translations of books.
  * Version:           1.2.7
  * Pressbooks tested up to: 5.10
  * Author:            My Language Skills team
@@ -33,18 +33,16 @@ include_once plugin_dir_path( __FILE__ ) . "tfp-print-hreflang.php";
 include_once plugin_dir_path( __FILE__ ) . "tfp-change-htmlang.php";
 include_once plugin_dir_path( __FILE__ ) . "tfp-translation-enabler.php";
 include_once plugin_dir_path( __FILE__ ) . "tfp-network-settings.php";
-include_once plugin_dir_path( __FILE__ ) . "uninstall.php";
 
 add_action('wp_ajax_efp_mark_as_original', 'tfp_updateTransTable', 2);
 add_action('admin_init', 'tfp_createLanguageBox');
 
 /**
-* Function responsible for creation/updating translations table in database
+* Function responsible for creation/updating translations table in database (admin area)
 *
 * @since
 *
 */
-
 function tfp_updateTransTable () {
 
 	//security check
@@ -54,9 +52,8 @@ function tfp_updateTransTable () {
 
 	global $wpdb;
 
-
-	if (!empty($_POST['book_id'])){ // validate
-		$post_book_id = $_POST[book_id];
+	if (!empty($_POST['book_id'])){
+		$post_book_id = (int) $_POST['book_id'];
 	}
 
 	$table_name = $wpdb->prefix . 'trans_rel'; //table in database
@@ -506,8 +503,8 @@ if(!empty($relations)){
  }
 
 /**
-* Functionality called from the front-end. Checks if both 'tfp_book_translation_enable' and 'tfp_post_translation_enable' are enabled.
-* If yes (values in DB is '1') we return "1" meaning it is enabled..
+* Functionality called from the front-end. Checks if 'tfp_book_translation_enable' enabled and if 'tfp_post_translation_disable' is not disabled.
+* If so, returns "1" meaning it is enabled.
 *
 * @since 1.2.6
 *
@@ -534,17 +531,17 @@ if(!empty($relations)){
 			if(isset($book_info_id)){ // IF  book-info or book-information post found
 				$book_info_id = get_object_vars($book_info_id);
 				$book_info_id = reset($book_info_id);
-				$tfp_post_translation_enable = get_post_meta($book_info_id, 'tfp_post_translation_enable', true);
+				$tfp_post_translation_disable = get_post_meta($book_info_id, 'tfp_post_translation_disable', true);
 			}
 			} else {
 				global $post;
 				if (isset($post->ID)){
-						$tfp_post_translation_enable = get_post_meta($post->ID, 'tfp_post_translation_enable', true);
+						$tfp_post_translation_disable = get_post_meta($post->ID, 'tfp_post_translation_disable', true);
 				}
 		}
 
 		//if book translation and post translation are both set and enabled we display translations option.
-		if (isset($tfp_post_translation_enable) && isset($tfp_book_translation_enable) && $tfp_book_translation_enable == "1" && $tfp_post_translation_enable == "1"){
+		if (isset($tfp_book_translation_enable) && $tfp_book_translation_enable == "1" && $tfp_post_translation_disable != "1"){
 			return "1";
 		} else {
 			return;
@@ -608,5 +605,19 @@ function tfp_getOriginalBookLanguage($blog_id){
 	restore_current_blog();
 
 	return $lang;
+}
+
+/**
+* Sanitizes checkboxes based on passed expected values.
+*
+* @since 1.2.6
+*
+*/
+function tfp_sanitize_checkbox( $input, $expected_value1, $expected_value2 ) {
+    if ( $expected_value1 == $input || $expected_value2 == $input) {
+        return $input;
+    } else {
+        return '';
+    }
 }
  ?>
