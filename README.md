@@ -79,6 +79,7 @@ If you need some help with understanding on how plugin was structured, take a lo
 
   * **REMOVED**
   * Admin EFP settings field related to saving posts translations values (enabled/disabled) and related functionality.
+  * Redundant variable.
 
 * **BUGFIXES**
   * Uninstall functionality
