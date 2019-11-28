@@ -102,9 +102,8 @@ function tfp_savePostTranslationOption() {
 		$post_type = get_post_type($post->ID );
 	}
 		if (isset($post_type)){
-				$sanitized_value = !empty($_POST['tfp_post_translation_disable']) ? tfp_sanitize_checkbox($_POST['tfp_post_translation_disable'], '1', '0') : '';
-				$post_trans_state = $_POST["tfp_post_translation_disable"];
-				update_post_meta($post->ID, "tfp_post_translation_disable", $sanitized_value);
+				$post_trans_state = !empty($_POST['tfp_post_translation_disable']) ? tfp_sanitize_checkbox($_POST['tfp_post_translation_disable'], '1', '0') : '';
+				update_post_meta($post->ID, "tfp_post_translation_disable", $post_trans_state);
     }
 }
 
