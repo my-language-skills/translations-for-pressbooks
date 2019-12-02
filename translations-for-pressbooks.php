@@ -33,6 +33,8 @@ include_once plugin_dir_path( __FILE__ ) . "tfp-print-hreflang.php";
 include_once plugin_dir_path( __FILE__ ) . "tfp-change-htmlang.php";
 include_once plugin_dir_path( __FILE__ ) . "tfp-translation-enabler.php";
 include_once plugin_dir_path( __FILE__ ) . "tfp-network-settings.php";
+include_once plugin_dir_path( __FILE__ ) . "groupByLanguage/groupByLanguage.php";
+
 
 add_action('wp_ajax_efp_mark_as_original', 'tfp_updateTransTable', 2);
 add_action('admin_init', 'tfp_createLanguageBox');
