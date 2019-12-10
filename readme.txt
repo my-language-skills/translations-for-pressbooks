@@ -53,9 +53,6 @@ No, the plugin only use main languages of the official countries, new languages 
 
 == Changelog ==
 === 1.X ===
-* **ADDITIONS**
-  * Added a new filter to choose books selecting a language
-
 
 === 1.2.7 ===
 * **ADDITIONS**
