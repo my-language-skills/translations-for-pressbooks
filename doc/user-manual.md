@@ -6,8 +6,7 @@ This manual gives brief explanations on features of the plugin, which could be u
 
 Translations for this book in front-end can be enable at Home Page (cover/book-info), front-matter , chapter , part,  back-matter.
 
-**Before to work, be sure you have translations for pressbooks plugin activated.**
-
+**Before to work, be sure you have Extensions for pressbooks plugin activated.**
 
 ## Translations relations
 
@@ -19,14 +18,34 @@ In case you are creating translations of your books, 'Translations relations' ca
 
 The working steps to create relations between you books are following:
 
-1. With use of `Original Mark` tick the checkbox in `/wp-admin/network/sites.php` `Featured Book` column in front of book in original language. *Wait until notification!*
-1. Go to `Book Info` page of a book which is a translation (this book **must** be created with `Cloning Tool` using original book as a source), allocate `Studying Content` metabox (if book was not cloned, this metabox will not be shown) and choose which language is this book about.
-	* In case the book is not actually a translation, but just a modification, choose 'Not translation' option in that metabox in order too keep consistenty of translations interactions.
-1. On the same page choose language of a book in `General Book Information` metabox, if it was not done before.
-1. Update Book Info.
-1. Go back to `/wp-admin/network/sites.php` page and mark translated book as `Featured Book`. *Wait until notification!*
+#### Original Books
 
-For more translations repeat steps from 2 to 5 in the list above.
+1.- Go too book info and select the language of the book (the language of the readers of the book)
+2.- With use of `Original Mark` tick the checkbox in `/wp-admin/network/sites.php` `Featured Book` column in front of book in original language. *Wait until notification!*
+
+#### Translated Books
+
+1.- Clone a book from the PB cloning tool (the name can be anything since a different directory will not affect the relations).
+1.1.- The name of the pages can not change.
+2.- Go to `Book Info` page of a book which is a translation (this book **must** be created with `Cloning Tool` using original book as a source), and choose which language this book is translated. (the language of the readers of the book)
+2.- With use of `Original Mark` tick the checkbox in `/wp-admin/network/sites.php` `Featured Book` column in front of book in original language. *Wait until notification!*
+2.1- Book must have selected the language (otherwise, the database will be created with wrong information, since the database is trigered manually).
+2.2.- If the language is update, the mark should be untick and tick again in order to update the database.
+3.- Once activated one original book and one translation or more, the hreflang tag will be automatically created between the books/pages.
+3.1- Remember, if a page change the url, there will not be point back translation, since the pages must have the same Path of the url.
+3.2- Remember, if the book is not an official translation, there will NOT be relations between the book and any other book with the hreflang tag.
+
+#### Site settings: Extensions for Pressbooks Theme customization settings
+
+The translations work in the backend of the site (google can read the translations from page to page). But the visitors can not see the translation menu by default. If the menu is required, must be activated at Enable translations in front-end.
+
+Remember, if the book is not an official translation (a featured boook), the menu will not point back to the page of the menu. Even if we see the language of our book (because the link will be to the official translation in that language)
+
+#### Multisite settings: EFP settings
+
+At the Translations section the data can be safe after the unistall of the plugin.
+
+### Database
 
 From database interaction point of view, all these steps make some impact on table of translations relations. When you mark original book with `Original Mark` table creates new row, responsible for series of the translations. After, when you mark translation with `Original Mark` after all required steps, the `id` of that book is added as value in corresponding column in original book row. That's why it is **important** for step 5 to be performed strictly after step 2-4, unless you would like to make this cloned book a root for another series of translations. Otherwise, translated book will be accounted as book in original language, which will start new translations series.
 
