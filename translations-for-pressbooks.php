@@ -538,6 +538,8 @@ if(!empty($relations)){
 				global $post;
 				if (isset($post->ID)){
 						$tfp_post_translation_disable = get_post_meta($post->ID, 'tfp_post_translation_disable', true);
+				} else {
+					$tfp_post_translation_disable = "1"; // fallback option for specific pages (like 'site index')
 				}
 		}
 

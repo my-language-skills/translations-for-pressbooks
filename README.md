@@ -72,6 +72,7 @@ If you need some help with understanding on how plugin was structured, take a lo
 * **BUGFIXES**
   * 'Studying content' metabox displaying fixed
   * Change querry checking from post_name to post_type (more stable)
+  * Add fallback option for specific pages like 'site index' (not to display translations by default)
 
 ## 1.2.7
 * **ADDITIONS**

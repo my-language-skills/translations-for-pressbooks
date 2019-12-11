@@ -56,6 +56,8 @@ No, the plugin only use main languages of the official countries, new languages 
 === 1.2.8 ===
 * **BUGFIXES**
   * 'Studying content' metabox displaying fixed
+  * Change querry checking from post_name to post_type (more stable)
+  * Add fallback option for specific pages like 'site index' (not to display translations by default)
 
 === 1.2.7 ===
 * **ADDITIONS**
