@@ -71,6 +71,7 @@ If you need some help with understanding on how plugin was structured, take a lo
 ## 1.2.8
 * **BUGFIXES**
   * 'Studying content' metabox displaying fixed
+  * Change querry checking from post_name to post_type (more stable)
 
 ## 1.2.7
 * **ADDITIONS**

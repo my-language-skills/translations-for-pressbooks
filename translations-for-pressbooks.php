@@ -528,8 +528,8 @@ if(!empty($relations)){
 		//if $current_post_id and $cover_id are equal we change post_id from where to get translation option.
 		if($current_post_id == $cover_id){
 			$table_name = $wpdb->prefix . 'posts';
-			$book_info_id = $wpdb->get_row("SELECT ID FROM $table_name WHERE post_name = 'book-info' OR post_name = 'book-information';");
-			if(isset($book_info_id)){ // IF  book-info or book-information post found
+			$book_info_id = $wpdb->get_row("SELECT ID FROM $table_name  WHERE post_type = 'metadata';");
+			if(isset($book_info_id)){ // IF  metadata post type found
 				$book_info_id = get_object_vars($book_info_id);
 				$book_info_id = reset($book_info_id);
 				$tfp_post_translation_disable = get_post_meta($book_info_id, 'tfp_post_translation_disable', true);
