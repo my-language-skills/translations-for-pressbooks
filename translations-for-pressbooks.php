@@ -16,7 +16,7 @@
  * Plugin Name:       Translations for PressBooks
  * Plugin URI:        https://github.com/my-language-skills/translations-for-pressbooks
  * Description:       Generates and displays translations of books.
- * Version:           1.2.7
+ * Version:           1.2.8
  * Pressbooks tested up to: 5.10
  * Author:            My Language Skills team
  * Author URI:        https://github.com/my-language-skills/
@@ -36,7 +36,7 @@ include_once plugin_dir_path( __FILE__ ) . "tfp-network-settings.php";
 
 
 add_action('wp_ajax_efp_mark_as_original', 'tfp_updateTransTable', 2);
-add_action('admin_init', 'tfp_createLanguageBox');
+add_action('custom_metadata_manager_init_metadata', 'tfp_createLanguageBox', 10);
 
 /**
 * Function responsible for creation/updating translations table in database (admin area)
@@ -131,6 +131,7 @@ function tfp_updateTransTable () {
 		}
 	}
 }
+
 
 /**
 * Function for producing metabox for selecting translation language
@@ -354,9 +355,8 @@ function tfp_createLanguageBox () {
 
 function tfp_getInfoPost () {
 	global $wpdb;
-	$info_post = $wpdb->get_results("SELECT `ID` FROM $wpdb->posts WHERE `post_type` = 'metadata' LIMIT 1", ARRAY_A);
-
-	return isset($info_post[0]['ID']) ? $info_post[0]['ID'] : 0;
+	$info_post = $wpdb->get_results("SELECT ID FROM $wpdb->posts WHERE post_type = 'metadata' LIMIT 1", ARRAY_A);
+ 	return isset($info_post[0]['ID']) ? $info_post[0]['ID'] : 0;
 }
 
 /**

@@ -53,6 +53,9 @@ No, the plugin only use main languages of the official countries, new languages 
 
 == Changelog ==
 === 1.X ===
+=== 1.2.8 ===
+* **BUGFIXES**
+  * 'Studying content' metabox displaying fixed
 
 === 1.2.7 ===
 * **ADDITIONS**

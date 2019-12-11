@@ -9,7 +9,7 @@ Contributors:
 * Tested up to: 5.3 WordPress
 * Tested up to 5.9.5 PressBooks
 * Requires PHP: 5.6
-* Stable tag: 1.2.7
+* Stable tag: 1.2.8
 * License: GNU 3.0
 * License URI: https://www.gnu.org/licenses/gpl-3.0.html
 * Gutenberg: compatible
@@ -68,6 +68,10 @@ If you need some help with understanding on how plugin was structured, take a lo
 ### Future
 
 ### Changelog
+## 1.2.8
+* **BUGFIXES**
+  * 'Studying content' metabox displaying fixed
+
 ## 1.2.7
 * **ADDITIONS**
   * Functions prefixing, data validation and code format enhancements
