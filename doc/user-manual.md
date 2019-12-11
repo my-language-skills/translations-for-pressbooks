@@ -26,8 +26,8 @@ The working steps to create relations between you books are following:
 #### Translated Books
 
 1.- Clone a book from the PB cloning tool (the name can be anything since a different directory will not affect the relations).
-1.1.- The name of the pages can not change.
-2.- Go to `Book Info` page of a book which is a translation (this book **must** be created with `Cloning Tool` using original book as a source), and choose which language this book is translated. (the language of the readers of the book)
+1.1.- The name of the pages can not change, otherwise, the source will not find the page of your book.
+2.- Go to `Book Info` page of a book which is a translation (this book **must** be created with `Cloning Tool` using original book as a source), and choose which language this book is about (learning english) and the translated language. (to spanish speakers)
 2.- With use of `Original Mark` tick the checkbox in `/wp-admin/network/sites.php` `Featured Book` column in front of book in original language. *Wait until notification!*
 2.1- Book must have selected the language (otherwise, the database will be created with wrong information, since the database is trigered manually).
 2.2.- If the language is update, the mark should be untick and tick again in order to update the database.
