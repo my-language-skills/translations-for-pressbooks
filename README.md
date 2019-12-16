@@ -171,7 +171,7 @@ If you need some help with understanding on how plugin was structured, take a lo
 
 * **List of Files revised**
      * translations-for-pressbooks.php
-     * original-mark.php
+     * efpb-original-mark.php
 
 #### 1.1
 * Edition extension removed

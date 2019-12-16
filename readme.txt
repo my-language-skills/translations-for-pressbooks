@@ -145,7 +145,7 @@ No, the plugin only use main languages of the official countries, new languages 
 
 * **List of Files revised**
      * translations-for-pressbooks.php
-     * original-mark.php
+     * efpb-original-mark.php
 
 === 1.1 ===
 * Edition extension removed
