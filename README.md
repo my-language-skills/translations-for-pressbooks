@@ -69,6 +69,10 @@ If you need some help with understanding on how plugin was structured, take a lo
 
 ### Changelog
 ## 1.2.8
+
+* **MODIFICATIONS**
+ * Images optimiced to 16 colors png 8 ImageAlpha and ImageOptim)
+
 * **BUGFIXES**
   * 'Studying content' metabox displaying fixed
   * Change querry checking from post_name to post_type (more stable)
