@@ -54,6 +54,10 @@ No, the plugin only use main languages of the official countries, new languages 
 == Changelog ==
 === 1.X ===
 === 1.2.8 ===
+
+* **MODIFICATIONS**
+ * Images optimiced to 16 colors png 8 ImageAlpha and ImageOptim)
+
 * **BUGFIXES**
   * 'Studying content' metabox displaying fixed
   * Change querry checking from post_name to post_type (more stable)
