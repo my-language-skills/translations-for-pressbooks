@@ -17,7 +17,7 @@
  * @since 1.2.6
  *
  */
-if (1 != get_site_option( 'tfp_uninstall_save' )){
+if (1 != get_option( 'tfp_uninstall_save' )){
 
 	global $wpdb;
 

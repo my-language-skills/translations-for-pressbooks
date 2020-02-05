@@ -17,32 +17,36 @@ if (( is_multisite()) && is_plugin_active('pressbooks/pressbooks.php') && is_plu
   }
 
 /**
- *	Renders settings section in EFP settings
  *
- * @since 1.2.6
+ *  Create section and call checkbox
  *
- */
+**/
 function tfp_renderTranslationsSection(){
 
-    add_settings_section( 'net_translations_section',
+    add_settings_section( 'translations_section',
                           'Translations section',
-                          'tfp_netSectionDescription',
+                          '',
                           'tfp-network-settings-page');
 
-    add_settings_field(	'tfp_net_setting',
-                        'Persist data on uninstall',
-                        'tfp_netSectionCallback',
-                        'tfp-network-settings-page',
-                        'net_translations_section'); //add settings field to the translations_section
+    add_option('tfp_uninstall_save', 0);
 
-		// add 	DB entry in sitemeta table
-    add_site_option('tfp_uninstall_save',1);
+    add_settings_field(	'tfp_uninstall_save',               // Parameter
+                        'Persist data on uninstall',        // Title
+                        'tfp_unistall_checkbox',            // Function
+                        'tfp-network-settings-page',        // Page
+                        'translations_section');            // Add settings field to the translations_section
+
+    register_setting( 'tfp-network-settings-page-grp',
+                      'tfp_uninstall_save');
 }
 
-function tfp_netSectionDescription(){
-	echo '<p>Settings related to the plugin:</p>';
-}
-
-function tfp_netSectionCallback(){
-	echo '<input name="tfp_uninstall_save" type="checkbox" value="1" ' . checked('1', get_site_option( 'tfp_uninstall_save' ) , false ) . '/> Check to keep translations data saved on plugin uninstall.';
+/**
+ *  Create the checkbox
+ *
+**/
+function tfp_unistall_checkbox(){
+  //echo "Blog ID: " . get_current_blog_id();
+  $option = get_option( 'tfp_uninstall_save' );
+  //echo "<br>Option value: "; var_dump($option); echo "<br>";
+  echo '<input name="tfp_uninstall_save" id="tfp_uninstall_save" type="checkbox" value="1" class= "code"' . checked(1, $option, false ) . '/> Check to keep translations data saved on plugin uninstall.';
 }
