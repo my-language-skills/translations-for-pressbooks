@@ -56,6 +56,7 @@ If you need some help with understanding on how plugin was structured, take a lo
 ### Now
 ## 0.xx
 * **ADDITIONS**
+  * Unistall translation section is created in this plugin
 
 * **ENHANCEMENTS**
 

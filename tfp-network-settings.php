@@ -5,7 +5,7 @@
  *
  * @package           translations for pressbooks
  * @since             1.2.6
- *
+ *                    1.2.8 modifications
  */
 
 defined ("ABSPATH") or die ("Action denied!");
@@ -17,9 +17,11 @@ if (( is_multisite()) && is_plugin_active('pressbooks/pressbooks.php') && is_plu
   }
 
 /**
- *
  *  Create section and call checkbox
  *
+ *  modifications 1.2.8
+ *
+ *  Unistall translation section is created in this plugin
 **/
 function tfp_renderTranslationsSection(){
 
@@ -42,11 +44,11 @@ function tfp_renderTranslationsSection(){
 
 /**
  *  Create the checkbox
- *
+ *  If option 'tfp_uninstall_save' = 1 checkbox is checked
 **/
 function tfp_unistall_checkbox(){
-  //echo "Blog ID: " . get_current_blog_id();
   $option = get_option( 'tfp_uninstall_save' );
-  //echo "<br>Option value: "; var_dump($option); echo "<br>";
+  echo "<label>";
   echo '<input name="tfp_uninstall_save" id="tfp_uninstall_save" type="checkbox" value="1" class= "code"' . checked(1, $option, false ) . '/> Check to keep translations data saved on plugin uninstall.';
+  echo "</label>";
 }

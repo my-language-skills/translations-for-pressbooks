@@ -4,7 +4,7 @@
  *
  * @package           translations for pressbooks
  * @since             1.2.6
- *
+ *                    1.2.8 modifications
  */
 
  if (!defined('WP_UNINSTALL_PLUGIN')) {
