@@ -15,7 +15,7 @@
  *	If 'tfp_uninstall_save' option is not checked clears all plugin DB data on uninstall.
  *
  * @since 1.2.6
- *
+ *        1.2.8 modifications
  */
 if (1 != get_option( 'tfp_uninstall_save' )){
 
