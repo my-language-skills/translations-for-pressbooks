@@ -49,6 +49,6 @@ function tfp_renderTranslationsSection(){
 function tfp_unistall_checkbox(){
   $option = get_option( 'tfp_uninstall_save' );
   echo "<label>";
-  echo '<input name="tfp_uninstall_save" id="tfp_uninstall_save" type="checkbox" value="1" class= "code"' . checked(1, $option, false ) . '/> Check to keep translations data saved on plugin uninstall.';
+  echo '<input name="tfp_uninstall_save" id="tfp_uninstall_save" type="checkbox" value="1" class= "code"' . checked(1, $option, false ) . '/> Check to keep translations data saved on plugin uninstall.   Present value: ' . $option;
   echo "</label>";
 }
