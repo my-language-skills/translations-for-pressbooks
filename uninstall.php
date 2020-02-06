@@ -55,5 +55,5 @@ if (1 != get_option( 'tfp_uninstall_save' )){
 
 		 restore_current_blog();
 	 }
-		delete_site_option( 'tfp_uninstall_save' );
+		delete_option( 'tfp_uninstall_save' );
 }
