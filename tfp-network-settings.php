@@ -21,7 +21,7 @@ if (( is_multisite()) && is_plugin_active('pressbooks/pressbooks.php') && is_plu
  *
  *  @since 1.2.8
  *
- *  Unistall translation section is created in this plugin
+ *  Unistall translation section is created by this plugin in extensions for pressbooks blank
 **/
 function tfp_renderTranslationsSection(){
 
